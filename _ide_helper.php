@@ -12178,305 +12178,96 @@ namespace Illuminate\Support\Facades {
  
 }
 
-namespace Tymon\JWTAuth\Facades { 
+namespace Laravel\Socialite\Facades { 
 
-    class JWTAuth {
+    class Socialite {
         
         /**
-         * Find a user using the user identifier in the subject claim.
+         * Get a driver instance.
          *
-         * @param bool|string $token
+         * @param string $driver
          * @return mixed 
          * @static 
          */ 
-        public static function toUser($token = false)
+        public static function with($driver)
         {
-            return \Tymon\JWTAuth\JWTAuth::toUser($token);
+            return \Laravel\Socialite\SocialiteManager::with($driver);
         }
         
         /**
-         * Generate a token using the user identifier as the subject claim.
+         * Build an OAuth 2 provider instance.
          *
-         * @param mixed $user
-         * @param array $customClaims
+         * @param string $provider
+         * @param array $config
+         * @return \Laravel\Socialite\Two\AbstractProvider 
+         * @static 
+         */ 
+        public static function buildProvider($provider, $config)
+        {
+            return \Laravel\Socialite\SocialiteManager::buildProvider($provider, $config);
+        }
+        
+        /**
+         * Format the server configuration.
+         *
+         * @param array $config
+         * @return array 
+         * @static 
+         */ 
+        public static function formatConfig($config)
+        {
+            return \Laravel\Socialite\SocialiteManager::formatConfig($config);
+        }
+        
+        /**
+         * Get the default driver name.
+         *
+         * @throws \InvalidArgumentException
          * @return string 
          * @static 
          */ 
-        public static function fromUser($user, $customClaims = array())
+        public static function getDefaultDriver()
         {
-            return \Tymon\JWTAuth\JWTAuth::fromUser($user, $customClaims);
+            return \Laravel\Socialite\SocialiteManager::getDefaultDriver();
         }
         
         /**
-         * Attempt to authenticate the user and return the token.
+         * Get a driver instance.
          *
-         * @param array $credentials
-         * @param array $customClaims
-         * @return false|string 
-         * @static 
-         */ 
-        public static function attempt($credentials = array(), $customClaims = array())
-        {
-            return \Tymon\JWTAuth\JWTAuth::attempt($credentials, $customClaims);
-        }
-        
-        /**
-         * Authenticate a user via a token.
-         *
-         * @param mixed $token
+         * @param string $driver
          * @return mixed 
          * @static 
          */ 
-        public static function authenticate($token = false)
+        public static function driver($driver = null)
         {
-            return \Tymon\JWTAuth\JWTAuth::authenticate($token);
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::driver($driver);
         }
         
         /**
-         * Refresh an expired token.
+         * Register a custom driver creator Closure.
          *
-         * @param mixed $token
-         * @return string 
-         * @static 
-         */ 
-        public static function refresh($token = false)
-        {
-            return \Tymon\JWTAuth\JWTAuth::refresh($token);
-        }
-        
-        /**
-         * Invalidate a token (add it to the blacklist).
-         *
-         * @param mixed $token
-         * @return bool 
-         * @static 
-         */ 
-        public static function invalidate($token = false)
-        {
-            return \Tymon\JWTAuth\JWTAuth::invalidate($token);
-        }
-        
-        /**
-         * Get the token.
-         *
-         * @return bool|string 
-         * @static 
-         */ 
-        public static function getToken()
-        {
-            return \Tymon\JWTAuth\JWTAuth::getToken();
-        }
-        
-        /**
-         * Get the raw Payload instance.
-         *
-         * @param mixed $token
-         * @return \Tymon\JWTAuth\Payload 
-         * @static 
-         */ 
-        public static function getPayload($token = false)
-        {
-            return \Tymon\JWTAuth\JWTAuth::getPayload($token);
-        }
-        
-        /**
-         * Parse the token from the request.
-         *
-         * @param string $query
-         * @return \JWTAuth 
-         * @static 
-         */ 
-        public static function parseToken($method = 'bearer', $header = 'authorization', $query = 'token')
-        {
-            return \Tymon\JWTAuth\JWTAuth::parseToken($method, $header, $query);
-        }
-        
-        /**
-         * Set the identifier.
-         *
-         * @param string $identifier
+         * @param string $driver
+         * @param \Closure $callback
          * @return $this 
          * @static 
          */ 
-        public static function setIdentifier($identifier)
+        public static function extend($driver, $callback)
         {
-            return \Tymon\JWTAuth\JWTAuth::setIdentifier($identifier);
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::extend($driver, $callback);
         }
         
         /**
-         * Get the identifier.
-         *
-         * @return string 
-         * @static 
-         */ 
-        public static function getIdentifier()
-        {
-            return \Tymon\JWTAuth\JWTAuth::getIdentifier();
-        }
-        
-        /**
-         * Set the token.
-         *
-         * @param string $token
-         * @return $this 
-         * @static 
-         */ 
-        public static function setToken($token)
-        {
-            return \Tymon\JWTAuth\JWTAuth::setToken($token);
-        }
-        
-        /**
-         * Set the request instance.
-         *
-         * @param \Request $request
-         * @static 
-         */ 
-        public static function setRequest($request)
-        {
-            return \Tymon\JWTAuth\JWTAuth::setRequest($request);
-        }
-        
-        /**
-         * Get the JWTManager instance.
-         *
-         * @return \Tymon\JWTAuth\JWTManager 
-         * @static 
-         */ 
-        public static function manager()
-        {
-            return \Tymon\JWTAuth\JWTAuth::manager();
-        }
-         
-    }
-
-    class JWTFactory {
-        
-        /**
-         * Create the Payload instance.
-         *
-         * @param array $customClaims
-         * @return \Tymon\JWTAuth\Payload 
-         * @static 
-         */ 
-        public static function make($customClaims = array())
-        {
-            return \Tymon\JWTAuth\PayloadFactory::make($customClaims);
-        }
-        
-        /**
-         * Add an array of claims to the Payload.
-         *
-         * @param array $claims
-         * @return $this 
-         * @static 
-         */ 
-        public static function addClaims($claims)
-        {
-            return \Tymon\JWTAuth\PayloadFactory::addClaims($claims);
-        }
-        
-        /**
-         * Add a claim to the Payload.
-         *
-         * @param string $name
-         * @param mixed $value
-         * @return $this 
-         * @static 
-         */ 
-        public static function addClaim($name, $value)
-        {
-            return \Tymon\JWTAuth\PayloadFactory::addClaim($name, $value);
-        }
-        
-        /**
-         * Build out the Claim DTO's.
+         * Get all of the created "drivers".
          *
          * @return array 
          * @static 
          */ 
-        public static function resolveClaims()
+        public static function getDrivers()
         {
-            return \Tymon\JWTAuth\PayloadFactory::resolveClaims();
-        }
-        
-        /**
-         * Set the Issuer (iss) claim.
-         *
-         * @return string 
-         * @static 
-         */ 
-        public static function iss()
-        {
-            return \Tymon\JWTAuth\PayloadFactory::iss();
-        }
-        
-        /**
-         * Set the Issued At (iat) claim.
-         *
-         * @return int 
-         * @static 
-         */ 
-        public static function iat()
-        {
-            return \Tymon\JWTAuth\PayloadFactory::iat();
-        }
-        
-        /**
-         * Set the Expiration (exp) claim.
-         *
-         * @return int 
-         * @static 
-         */ 
-        public static function exp()
-        {
-            return \Tymon\JWTAuth\PayloadFactory::exp();
-        }
-        
-        /**
-         * Set the Not Before (nbf) claim.
-         *
-         * @return int 
-         * @static 
-         */ 
-        public static function nbf()
-        {
-            return \Tymon\JWTAuth\PayloadFactory::nbf();
-        }
-        
-        /**
-         * Set the token ttl (in minutes).
-         *
-         * @param int $ttl
-         * @return $this 
-         * @static 
-         */ 
-        public static function setTTL($ttl)
-        {
-            return \Tymon\JWTAuth\PayloadFactory::setTTL($ttl);
-        }
-        
-        /**
-         * Get the token ttl.
-         *
-         * @return int 
-         * @static 
-         */ 
-        public static function getTTL()
-        {
-            return \Tymon\JWTAuth\PayloadFactory::getTTL();
-        }
-        
-        /**
-         * Set the refresh flow.
-         *
-         * @param bool $refreshFlow
-         * @return $this 
-         * @static 
-         */ 
-        public static function setRefreshFlow($refreshFlow = true)
-        {
-            return \Tymon\JWTAuth\PayloadFactory::setRefreshFlow($refreshFlow);
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::getDrivers();
         }
          
     }
@@ -14598,9 +14389,7 @@ namespace  {
 
     class View extends \Illuminate\Support\Facades\View {}
 
-    class JWTAuth extends \Tymon\JWTAuth\Facades\JWTAuth {}
-
-    class JWTFactory extends \Tymon\JWTAuth\Facades\JWTFactory {}
+    class Socialite extends \Laravel\Socialite\Facades\Socialite {}
  
 }
 

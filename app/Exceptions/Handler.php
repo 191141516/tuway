@@ -48,6 +48,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $apiHandler = new ApiHandler($request, $exception);
+
+        if ($apiHandler->shouldReturn()) {
+            return $apiHandler->report();
+        }
+
         return parent::render($request, $exception);
     }
 }
