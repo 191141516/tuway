@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
+
+    Route::get('/wx-login', 'AuthenticateController@wxLogin')->name('wx-login');
+
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return Auth::guard('api')->user();
+//    return $request->user();
+    });
+
 });
+
+
+
+
