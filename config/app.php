@@ -168,7 +168,6 @@ return [
          * Package Service Providers...
          */
         \Prettus\Repository\Providers\RepositoryServiceProvider::class,
-        \Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         \Laravel\Passport\PassportServiceProvider::class,
 
         /*
