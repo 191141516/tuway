@@ -10,9 +10,11 @@ namespace App\Exceptions;
 
 
 use App\Traits\ApiResponse;
+use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiHandler
 {
@@ -29,7 +31,9 @@ class ApiHandler
 
     protected $doReport = [
         AuthenticationException::class => ['未授权', 401],
-        ModelNotFoundException::class => ['接口不存在', 404]
+        ModelNotFoundException::class => ['接口不存在', 404],
+        ValidationException::class => ['数据验证错误', 601],
+        Exception::class => ['操作失败', 602],
     ];
 
     public function __construct(Request $request, \Exception $exception)
@@ -70,7 +74,13 @@ class ApiHandler
     {
         $message = $this->doReport[$this->report];
 
-        return $this->failed($message[0], $message[1]);
+        $errors = [];
+
+        if (method_exists($this->exception, 'errors')) {
+            $errors = $this->exception->errors();
+        }
+
+        return $this->failed($message[0], $message[1], [], $errors);
 
     }
 }
