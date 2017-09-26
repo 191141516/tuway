@@ -15,7 +15,13 @@ class User extends \App\User implements Transformable
         'password',
         'open_id',
         'expires_in',
-        'session_key'
+        'session_key',
+        'gender',
+        'city',
+        'province',
+        'country',
+        'avatar_url',
+        'union_id',
     ];
 
     protected $hidden = [

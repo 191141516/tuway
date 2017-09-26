@@ -15,9 +15,10 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
-    Route::get('/wx-login', 'AuthenticateController@wxLogin')->name('wx-login');
+    Route::get('wx-login', 'AuthenticateController@wxLogin')->name('wx-login');
 
-    Route::middleware('auth:api')->get('/user', function (Request $request) {
+    Route::group(['middleware' => ['auth:api']] , function () {
+        Route::post('save-user-info', 'UserController@saveUserInfo')->name('save-user-info');
 //    return Auth::guard('api')->user();
 //    return $request->user();
     });
