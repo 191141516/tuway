@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'PRC',
 
     /*
     |--------------------------------------------------------------------------
@@ -169,6 +169,8 @@ return [
          */
         \Prettus\Repository\Providers\RepositoryServiceProvider::class,
         \Laravel\Passport\PassportServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -178,6 +180,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
 
     ],
 

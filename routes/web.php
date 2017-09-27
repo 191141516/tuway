@@ -15,3 +15,19 @@ Route::get('/', function () {
 
     return view('welcome');
 });
+
+//后台路由
+Route::group(['middleware' => ['web'],'namespace' => 'Admin', 'as' => 'admin.', 'prefix' => 'admin'], function(){
+    Route::get('/login', 'LoginController@showLoginForm')->name('show-login');
+    Route::post('/login', 'LoginController@login')->name('login');
+
+    Route::group(['middleware' => ['auth:admin']], function(){
+        //日志
+        Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+        Route::get('/logout', 'LoginController@logout')->name('logout');
+
+        Route::get('/', 'DashboardController@index')->name('dashboard');
+
+    });
+});
