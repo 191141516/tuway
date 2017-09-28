@@ -14,12 +14,12 @@ class AlterUserTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('gender')->comment('性别 0：未知、1：男、2：女');
-            $table->string('city')->comment('城市');
-            $table->string('province')->comment('省');
-            $table->string('country')->comment('国家');
-            $table->string('avatar_url')->comment('头像地址');
-            $table->string('union_id')->comment('union_id');
+            $table->tinyInteger('gender')->comment('性别 0：未知、1：男、2：女');
+            $table->string('city')->nullable()->comment('城市');
+            $table->string('province')->nullable()->comment('省');
+            $table->string('country')->nullable()->comment('国家');
+            $table->string('avatar_url')->nullable()->comment('头像地址');
+            $table->string('union_id')->nullable()->comment('union_id');
         });
     }
 
@@ -31,7 +31,7 @@ class AlterUserTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table){
-            $table->dropColumn(['nick_name', 'gender', 'city', 'province', 'country', 'avatar_url', 'union_id']);
+            $table->dropColumn(['gender', 'city', 'province', 'country', 'avatar_url', 'union_id']);
         });
     }
 }

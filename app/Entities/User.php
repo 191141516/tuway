@@ -29,4 +29,22 @@ class User extends \App\User implements Transformable
         'remember_token',
         'session_key',
     ];
+
+    /**
+     * 发布的活动
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function activity()
+    {
+        return $this->belongsTo(Activity::class, 'user_id');
+    }
+
+    /**
+     * 参数的活动
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function entry()
+    {
+        return $this->belongsTo(Entry::class, 'user_id');
+    }
 }
