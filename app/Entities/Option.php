@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Library\Tools\Common;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -12,9 +13,20 @@ class Option extends Model implements Transformable
 
     protected $fillable = [
         'name',
+        'key',
         'type',
         'rule',
         'option_value',
+        'messages'
     ];
 
+    public function getOptionValueAttribute($value)
+    {
+        return empty($value) ? '[]': Common::jsonDecode($value);
+    }
+
+    public function getRuleAttribute($value)
+    {
+        return empty($value) ? '[]': Common::jsonDecode($value);
+    }
 }

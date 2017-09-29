@@ -66,10 +66,12 @@ return [
         'tmp' => [
             'driver' => 'local',
             'root' => public_path(env('UPLOAD_TMP_PATH')),
+            'disable_asserts' => public_path()
         ],
         'img' => [
             'driver' => 'local',
             'root' => public_path(env('UPLOAD_IMG_PATH')),
+            'disable_asserts' => public_path()
         ]
     ],
 

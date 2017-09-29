@@ -15,9 +15,6 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
-    Route::get('test', 'TestController@index');
-    Route::get('list/{id}', 'ActivityController@detail');
-
 
     Route::get('wx-login', 'AuthenticateController@wxLogin')->name('wx-login');
 
@@ -33,19 +30,28 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
         //活动
         Route::group(['prefix' => 'activity', 'as' => 'activity.'], function(){
             //发布活动
-            Route::post('create', 'ActivityController@create')->name('create');
+            Route::post('/', 'ActivityController@create')->name('create');
             //活动列表
             Route::get('/', 'ActivityController@index')->name('list');
             //活动详情
             Route::get('/{id}', 'ActivityController@detail')->name('detail');
+            //活动修改
+            Route::put('/{id}', 'ActivityController@edit')->name('edit');
         });
 
         //报名
-
+        Route::group(['prefix' => 'entry', 'as' => 'entry.'], function(){
+            Route::post('/', 'EntryController@create')->name('create');
+        });
 
         //上传
         Route::group(['prefix' => 'upload', 'as' => 'upload.'], function(){
             Route::post('img', 'UploadController@img')->name('img');
+        });
+
+        //必选项
+        Route::group(['prefix' => 'option', 'as' => 'option.'], function(){
+            Route::get('/', 'OptionController@index')->name('list');
         });
     });
 

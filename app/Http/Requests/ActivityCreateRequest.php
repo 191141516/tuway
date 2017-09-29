@@ -26,7 +26,7 @@ class ActivityCreateRequest extends FormRequest
     {
         return [
             'title' => 'required|min:2|max:120',
-            'content' => 'required|min:30|max:5000',
+            'content' => 'required|min:10|max:2500',
             'pic' => 'required|url',
             'total' => 'required|integer|max:10000',
             'phone' => [

@@ -103,11 +103,17 @@ class Activity extends Model implements Transformable
 
     public function setOptionsAttribute($value)
     {
-        $this->attributes['options'] = is_array($value) ? $value: [$value];
+        $arr = is_array($value) ? $value: [$value];
+        $this->attributes['options'] = json_encode($arr);
     }
 
     public function getOptionsAttribute($value)
     {
         return json_decode($value);
+    }
+
+    public function getPicAttribute($value)
+    {
+        return asset(env('UPLOAD_IMG_PATH').$value);
     }
 }

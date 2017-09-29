@@ -82,7 +82,7 @@ class ApiHandler
             $errors = $this->exception->errors();
         }
 
-        return $this->failed($message[0], $message[1], [], $errors);
+        return $this->failed($this->exception->getMessage(), $message[1], [], $errors);
 
     }
 }
