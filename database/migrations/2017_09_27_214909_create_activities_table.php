@@ -27,6 +27,7 @@ class CreateActivitiesTable extends Migration
             $table->smallInteger('num')->default(0)->comment('已报名人数');
             $table->dateTime('start_date')->comment('开始时间');
             $table->dateTime('end_date')->comment('结束时间');
+            $table->tinyInteger('status')->default(1)->comment('状态 1.报名中 2.活动中 3.活动结束');
             $table->timestamps();
 		});
 	}

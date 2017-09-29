@@ -28,6 +28,7 @@ class User extends \App\User implements Transformable
         'password',
         'remember_token',
         'session_key',
+        'pivot',
     ];
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -9,6 +10,13 @@ use Prettus\Repository\Traits\TransformableTrait;
 class Activity extends Model implements Transformable
 {
     use TransformableTrait;
+
+    /** 报名中 */
+    const STATUS_APPLYING = 1;
+    /** 进行中 */
+    const STATUS_STARTING = 2;
+    /** 结束 */
+    const STATUS_END = 3;
 
     protected $fillable = [
         'user_id',
@@ -23,15 +31,15 @@ class Activity extends Model implements Transformable
         'num',
         'start_date',
         'end_date',
+        'status',
     ];
 
     /**
      * 发布者
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -50,5 +58,56 @@ class Activity extends Model implements Transformable
     public function entryUser()
     {
         return $this->belongsToMany(User::class, 'entries', 'activity_id', 'user_id');
+    }
+
+    public function getStartDateTextAttribute()
+    {
+        $now = Carbon::now();
+        $createDate = new Carbon($this->created_at);
+        $diff_hours = $now->diffInHours($createDate);
+
+        if ($diff_hours < env('DIFF_HOURS')) {
+            $text = $diff_hours . '小时前';
+        } else {
+            $text = $createDate->format('m/d H:i');
+        }
+
+        return $text;
+    }
+
+    public function getActivityDateTextAttribute()
+    {
+        $week = [
+            '星期日',
+            '星期一',
+            '星期二',
+            '星期三',
+            '星期四',
+            '星期五',
+            '星期六',
+        ];
+
+        $start_date = new Carbon($this->start_date);
+        $end_date = new Carbon($this->end_date);
+        $format = 'Ymd';
+        $show_format = 'm月d日';
+
+        if ($start_date->format($format) === $end_date->format($format)) {
+            $week_str = $start_date->format($show_format) . ' ' . $week[$start_date->dayOfWeek];
+        } else {
+            $week_str = $start_date->format($show_format) . '-' . $end_date->format($show_format);
+        }
+
+        return $week_str;
+    }
+
+    public function setOptionsAttribute($value)
+    {
+        $this->attributes['options'] = is_array($value) ? $value: [$value];
+    }
+
+    public function getOptionsAttribute($value)
+    {
+        return json_decode($value);
     }
 }

@@ -19,5 +19,4 @@ class Entry extends Model implements Transformable
         'gender',
         'age',
     ];
-
 }

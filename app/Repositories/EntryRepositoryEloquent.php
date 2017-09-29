@@ -2,11 +2,9 @@
 
 namespace App\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\EntryRepository;
+use App\Criteria\PatchCriteria;
 use App\Entities\Entry;
-use App\Validators\EntryValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class EntryRepositoryEloquent
@@ -31,6 +29,6 @@ class EntryRepositoryEloquent extends BaseRepository implements EntryRepository
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria(app(PatchCriteria::class));
     }
 }

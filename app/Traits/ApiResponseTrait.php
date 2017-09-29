@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response as Foundationresponse;
  * Date: 2017/9/22
  * Time: 下午1:44
  */
-trait ApiResponse
+trait ApiResponseTrait
 {
     protected $status = Foundationresponse::HTTP_OK;
 
@@ -87,7 +87,7 @@ trait ApiResponse
      * @param string $status
      * @return mixed
      */
-    public function success($data, $header = [])
+    public function success($data = [], $header = [])
     {
         $this->returnData['data'] = $data;
         return $this->respond($header);

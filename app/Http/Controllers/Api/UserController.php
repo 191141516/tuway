@@ -23,6 +23,6 @@ class UserController extends ApiController
 
         $this->service->saveWXInfo($request->get('encryptedData'), $request->get('iv'), $request->user());
 
-        return $this->success([]);
+        return $this->success();
     }
 }

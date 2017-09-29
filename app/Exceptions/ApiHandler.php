@@ -9,16 +9,17 @@
 namespace App\Exceptions;
 
 
-use App\Traits\ApiResponse;
+use App\Traits\ApiResponseTrait;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ApiHandler
 {
-    use ApiResponse;
+    use ApiResponseTrait;
 
     /** @var  \Exception */
     protected $exception;
@@ -31,7 +32,8 @@ class ApiHandler
 
     protected $doReport = [
         AuthenticationException::class => ['未授权', 401],
-        ModelNotFoundException::class => ['接口不存在', 404],
+        NotFoundHttpException::class => ['接口不存在', 404],
+        ModelNotFoundException::class => ['系统异常', 500],
         ValidationException::class => ['数据验证错误', 601],
         Exception::class => ['操作失败', 602],
     ];

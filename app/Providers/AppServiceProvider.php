@@ -28,5 +28,8 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
 
+        \DB::listen(function ($query) {
+            \Log::warning($query->sql . "\n" . json_encode($query->bindings) . "\n" . '耗时:' . ($query->time / 1000) . "\n");
+        });
     }
 }
