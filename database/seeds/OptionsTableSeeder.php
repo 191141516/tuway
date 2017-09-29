@@ -15,6 +15,7 @@ class OptionsTableSeeder extends Seeder
             [
                 'name' => '姓名',
                 'type' => 'text',
+                'key' => 'name',
                 'rule' => [
                     'required',
                     'min:2',
@@ -24,6 +25,7 @@ class OptionsTableSeeder extends Seeder
             [
                 'name' => '手机号码',
                 'type' => 'number',
+                'key' => 'phone',
                 'rule' => [
                     'required',
                     'regex:/^1(\d){10}$/'
@@ -32,6 +34,7 @@ class OptionsTableSeeder extends Seeder
             [
                 'name' => '身份证号码',
                 'type' => 'idcard',
+                'key' => 'idcard',
                 'rule' => [
                     'required',
                     'max:18',
@@ -40,6 +43,7 @@ class OptionsTableSeeder extends Seeder
             [
                 'name' => '性别',
                 'type' => 'picker',
+                'key' => 'gender',
                 'rule' => [
                     'required',
                     'in:1,2'
@@ -58,6 +62,7 @@ class OptionsTableSeeder extends Seeder
             [
                 'name' => '年龄',
                 'type' => 'number',
+                'key' => 'age',
                 'rule' => [
                     'required',
                     'max:100'
