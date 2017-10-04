@@ -48,11 +48,18 @@ class ActivityService
 
     public function paginate(Request $request)
     {
+        $relations = [
+            'user' => function($query){
+                $query->select(['id', 'name', 'avatar_url']);
+            },
+        ];
+
         $this->repository->pushCriteria(app(ActivityPaginateCriteria::class));
-        $paginate = $this->repository->paginate($request->get('page_size', 10));
+        $paginate = $this->repository->with($relations)->paginate($request->get('page_size', 10));
 
         foreach ($paginate->items() as $item) {
             $item->append(['start_date_text', 'activity_date_text']);
+            $item->addHidden(['options', 'content', 'phone', 'user_id', 'created_at', 'updated_at']);
         }
 
         return $paginate;

@@ -17,6 +17,10 @@ class Activity extends Model implements Transformable
     const STATUS_STARTING = 2;
     /** 结束 */
     const STATUS_END = 3;
+    /** 我发布的 */
+    const TYPE_MY = 1;
+    /** 我参与的 */
+    const TYPE_JOIN = 2;
 
     protected $fillable = [
         'user_id',
