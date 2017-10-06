@@ -8,11 +8,11 @@ namespace Library\Tools;
  */
 class ResponseFind
 {
-    private $_response;
+    private $response;
 
     public function __construct($response)
     {
-        $this->_response = $response;
+        $this->response = $response;
     }
 
     /**
@@ -26,7 +26,7 @@ class ResponseFind
         $result = $default;
 
         $arr = explode('.', $name);
-        $response = $this->_response;
+        $response = $this->response;
 
         foreach ($arr as $property){
             if (is_object($response) && property_exists($response, $property)) {
