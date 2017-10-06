@@ -4,14 +4,17 @@ namespace App\Repositories;
 
 use App\Criteria\PatchCriteria;
 use App\Entities\Admin;
+use Prettus\Repository\Contracts\CacheableInterface;
 use Prettus\Repository\Eloquent\BaseRepository;
+use Prettus\Repository\Traits\CacheableRepository;
 
 /**
  * Class AdminRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class AdminRepositoryEloquent extends BaseRepository implements AdminRepository
+class AdminRepositoryEloquent extends BaseRepository implements AdminRepository, CacheableInterface
 {
+    use CacheableRepository;
     /**
      * Specify Model class name
      *

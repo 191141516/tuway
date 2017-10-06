@@ -4,14 +4,18 @@ namespace App\Repositories;
 
 use App\Criteria\PatchCriteria;
 use App\Entities\Entry;
+use Prettus\Repository\Contracts\CacheableInterface;
 use Prettus\Repository\Eloquent\BaseRepository;
+use Prettus\Repository\Traits\CacheableRepository;
 
 /**
  * Class EntryRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class EntryRepositoryEloquent extends BaseRepository implements EntryRepository
+class EntryRepositoryEloquent extends BaseRepository implements EntryRepository, CacheableInterface
 {
+    use CacheableRepository;
+
     /**
      * Specify Model class name
      *
