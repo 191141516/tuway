@@ -26,10 +26,16 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
-        }
 
-        \DB::listen(function ($query) {
-            \Log::warning($query->sql . "\n" . json_encode($query->bindings) . "\n" . '耗时:' . ($query->time / 1000) . "\n");
-        });
+            \DB::listen(function ($query) {
+                \Log::warning($query->sql . "\n" . json_encode($query->bindings) . "\n" . '耗时:' . ($query->time / 1000) . "\n");
+            });
+        }else{
+            \DB::listen(function ($query) {
+                if ($query->time >= 1000) {
+                    \Log::warning($query->sql . "\n" . json_encode($query->bindings) . "\n" . '耗时:' . ($query->time / 1000) . "\n");
+                }
+            });
+        }
     }
 }

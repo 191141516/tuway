@@ -43,7 +43,6 @@ class ClearTmpImg extends Command
      */
     public function handle()
     {
-        //FilesystemIterator;
         $files = File::files(public_path(env('UPLOAD_TMP_PATH')));
 
         $file_paths = [];
