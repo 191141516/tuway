@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('update:activity-status')->withoutOverlapping()->everyMinute();
+        $schedule->command('clear:tmp-img')->withoutOverlapping()->everyThirtyMinutes();
     }
 
     /**
