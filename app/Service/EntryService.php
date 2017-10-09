@@ -9,6 +9,7 @@
 namespace App\Service;
 
 
+use App\Entities\Activity;
 use App\Repositories\EntryRepository;
 use Illuminate\Http\Request;
 
@@ -26,6 +27,7 @@ class EntryService
     {
         $activity_id = $request->get('activity_id');
         $user_id = $request->user('api')->id;
+        $data = $request->all();
 
         //check报名
         $this->checkUserActivityEntry($activity_id, $user_id);
@@ -33,18 +35,10 @@ class EntryService
         $activityService = app(ActivityService::class);
         $activity = $activityService->getInfoById($activity_id);
 
-        $optionService = app(OptionService::class);
-        $option_collection = $optionService->getInfoByIds($activity->options, ['key', 'rule']);
-
-        $rule = [];
-
-        foreach ($option_collection as $option) {
-            $rule[$option->key] = $option->rule;
-        }
-
-        $data = $request->all();
-
-        validator($data, $rule);
+        //check报名数量
+        $this->checkActivityTotal($activity);
+        //validator报名必填项
+        $this->validatorOptions($data, $activity);
 
         $data['user_id'] = $user_id;
 
@@ -63,5 +57,30 @@ class EntryService
         if ($result->count() > 0) {
             throw new \Exception('一个微信号只能报名一次');
         }
+    }
+
+    private function checkActivityTotal(Activity $activity)
+    {
+        if ($activity->total <= $activity->num) {
+            throw new \Exception('活动报名人数已满');
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $activity
+     */
+    private function validatorOptions(array $data, $activity)
+    {
+        $optionService = app(OptionService::class);
+        $option_collection = $optionService->getInfoByIds($activity->options, ['key', 'rule']);
+
+        $rule = [];
+
+        foreach ($option_collection as $option) {
+            $rule[$option->key] = $option->rule;
+        }
+
+        validator($data, $rule);
     }
 }
