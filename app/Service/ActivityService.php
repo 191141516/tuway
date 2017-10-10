@@ -18,7 +18,7 @@ use Library\Tools\Common;
 class ActivityService
 {
     /** @var ActivityRepository */
-    protected $repository;
+    protected $activityRepository;
 
     /** @var string 图片tmp路径 */
     private $from;
@@ -28,7 +28,7 @@ class ActivityService
 
     public function __construct(ActivityRepository $activityRepository)
     {
-        $this->repository = $activityRepository;
+        $this->activityRepository = $activityRepository;
     }
 
     public function create(Request $request)
@@ -38,7 +38,7 @@ class ActivityService
         $row['user_id'] = $request->user('api')->id;
 
         \DB::transaction(function () use ($row) {
-            $this->repository->create($row);
+            $this->activityRepository->create($row);
             //移动图片
             Common::move($this->from, $this->to);
             //生成缩略图
@@ -54,8 +54,8 @@ class ActivityService
             },
         ];
 
-        $this->repository->pushCriteria(app(ActivityPaginateCriteria::class));
-        $paginate = $this->repository->with($relations)->paginate($request->get('page_size', 10));
+        $this->activityRepository->pushCriteria(app(ActivityPaginateCriteria::class));
+        $paginate = $this->activityRepository->with($relations)->paginate($request->get('page_size', 10));
 
         foreach ($paginate->items() as $item) {
             $item->append(['start_date_text', 'activity_date_text']);
@@ -84,7 +84,7 @@ class ActivityService
             ['start_date', '<=', Carbon::now()->format('Y-m-d H:i')],
         ];
 
-        $collection = $this->repository->findWhere($where);
+        $collection = $this->activityRepository->findWhere($where);
 
         if ($collection->count() > 0) {
             $collection->each(function ($activity) {
@@ -103,7 +103,7 @@ class ActivityService
             ['end_date', '<=', Carbon::now()->format('Y-m-d H:i')],
         ];
 
-        $collection = $this->repository->findWhere($where);
+        $collection = $this->activityRepository->findWhere($where);
 
         if ($collection->count()) {
             $collection->each(function ($activity) {
@@ -148,7 +148,7 @@ class ActivityService
             },
         ];
 
-        $activity = $this->repository->with($relations)->find($id);
+        $activity = $this->activityRepository->with($relations)->find($id);
 
         $activity->setAttribute('edit', $activity->user_id == \Auth::guard('api')->user()->id);
 
@@ -159,13 +159,13 @@ class ActivityService
 
     public function getInfoById($id, $columns = ['*'])
     {
-        return $this->repository->find($id, $columns);
+        return $this->activityRepository->find($id, $columns);
     }
 
     public function edit($id, Request $request)
     {
         $row = $request->all();
-        $activity = $this->repository->find($id);
+        $activity = $this->activityRepository->find($id);
 
         if (empty($activity)) {
             throw new \Exception('活动不存在');

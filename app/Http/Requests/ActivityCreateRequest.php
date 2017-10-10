@@ -14,7 +14,7 @@ class ActivityCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return \Auth::guard('api')->check();
     }
 
     /**

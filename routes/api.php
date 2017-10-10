@@ -42,6 +42,8 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
         //报名
         Route::group(['prefix' => 'entry', 'as' => 'entry.'], function(){
             Route::post('/', 'EntryController@create')->name('create');
+            //活动报名名单
+            Route::get('/entry-list', 'EntryController@entryList')->name('entry-list');
         });
 
         //上传

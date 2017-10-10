@@ -19,4 +19,9 @@ class Entry extends Model implements Transformable
         'gender',
         'age',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

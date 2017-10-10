@@ -83,4 +83,27 @@ class EntryService
 
         validator($data, $rule);
     }
+
+    /**
+     * 活动报名列表
+     * @param $id
+     * @param $request
+     */
+    public function entryList(Request $request)
+    {
+        $page_size = $request->get('page_size', 10);
+        $activity_id = $request->get('activity_id');
+
+        $relations = [
+            'user' => function($query){
+                $query->select(['id', 'avatar_url', 'name']);
+            }
+        ];
+
+        $this->entryRepository->scopeQuery(function($query) use ($activity_id){
+            return $query->where('activity_id', $activity_id);
+        });
+
+        return $this->entryRepository->with($relations)->paginate($page_size);
+    }
 }

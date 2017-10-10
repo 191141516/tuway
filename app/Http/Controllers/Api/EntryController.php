@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\EntryCreateRequest;
+use App\Http\Requests\EntryListRequest;
 use App\Service\EntryService;
+use Illuminate\Http\Request;
 
 class EntryController extends ApiController
 {
@@ -24,5 +26,11 @@ class EntryController extends ApiController
     {
         $this->entryService->create($request);
         return $this->success();
+    }
+
+    public function entryList(EntryListRequest $request)
+    {
+        $data = $this->entryService->entryList($request);
+        return $this->success($data);
     }
 }
