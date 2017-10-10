@@ -53,7 +53,7 @@ class UploadService
      */
     protected function checkMime(UploadedFile $file, array $mimes)
     {
-        $mime = $file->getMimeType();
+        $mime = $file->getClientMimeType();
 
         if (!in_array($mime, $mimes)) {
             throw new \Exception('上传文件类型错误');
