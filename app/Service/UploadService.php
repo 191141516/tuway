@@ -43,7 +43,9 @@ class UploadService
         $this->checkMime($file, config('upload.img.mime'));
         $this->checkSize($file, config('upload.img.size'));
 
-        $filename = \Storage::disk('tmp')->putFile('', $file);
+        $filename = $this->newFileName($file->guessClientExtension());
+
+        \Storage::disk('tmp')->putFileAs('', $file, $filename);
 
         return asset(env('UPLOAD_TMP_PATH').$filename);
     }
