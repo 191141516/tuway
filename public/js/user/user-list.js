@@ -1,122 +1,153 @@
-var TableDatatablesAjax = function() {
-  var datatableAjax = function(){
-    dt = $('#datatable_ajax');
-    ajax_datatable = dt.DataTable({
-      "processing": true,
-      "serverSide": true,
-      "searching" : false,
-      "ajax": {
-        'url' : '/admin/user/ajaxIndex',
-        "data": function ( d ) {
-          d.name = $('.filter input[name="name"]').val();
-          d.tel = $('.filter input[name="tel"]').val();
-          d.email = $('.filter input[name="email"]').val();
-          d.status = $('.filter select[name="status"] option:selected').val();
-          d.created_at_from = $('.filter input[name="created_at_from"]').val();
-          d.created_at_to = $('.filter input[name="created_at_to"]').val();
-          d.updated_at_from = $('.filter input[name="updated_at_from"]').val();
-          d.updated_at_to = $('.filter input[name="updated_at_to"]').val();
-        }
-      },
-      "pagingType": "bootstrap_full_number",
-      "order" : [],
-      "orderCellsTop": true,
-      "dom" : "<'row'<'col-sm-3'l><'col-sm-6'<'customtoolbar'>><'col-sm-3'f>>" +"<'row'<'col-sm-12'tr>>" +"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-      "columns": [
-        {
-          "data": "id",
-          "name" : "id",
-        },
-        {
-          "data": "name",
-          "name" : "name",
-          "orderable" : false,
-        },
-        {
-            "data": "company.name",
-            "name" : "company.name",
-            "orderable" : false,
-        },
-        {
-            "data": "tel",
-            "name" : "tel",
-            "orderable" : false,
-        },
-        {
-          "data": "email",
-          "name": "email",
-          "orderable" : false,
-        },
-        {
-          "data": "status",
-          "name": "status",
-          "orderable" : false,
-          render:function(data){
-            if (data == 1) {
-              return '<span class="label label-success"> 验证 </span>';
-            }else{
-              return '<span class="label label-warning"> 未验证 </span>';
+var TableDatatablesAjax = function () {
+    var datatableAjax = function () {
+        dt = $('#datatable_ajax');
+        ajax_datatable = dt.DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching": false,
+            "ajax": {
+                'url': '/admin/user/ajax',
+                "data": function (d) {
+                    d.name = $('.filter input[name="name"]').val();
+                    d.status = $('.filter select[name="status"] option:selected').val();
+                }
+            },
+            "pagingType": "bootstrap_full_number",
+            "order": [],
+            "orderCellsTop": true,
+            "dom": "<'row'<'col-sm-3'l><'col-sm-6'<'customtoolbar'>><'col-sm-3'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "columns": [
+                {
+                    "data": "id",
+                    "name": "id"
+                },
+                {
+                    "data": "avatar_url",
+                    "name": "avatar_url",
+                    "orderable": false,
+                    render: function (data) {
+                        return '<img src="'+data+'" width="30" />';
+                    }
+                },
+                {
+                    "data": "name",
+                    "name": "name",
+                    "orderable": false
+                },
+                {
+                    "data": "statistics.join",
+                    "name": "statistics.join"
+                },
+                {
+                    "data": "statistics.publish",
+                    "name": "statistics.publish"
+                },
+                {
+                    "data": "status",
+                    "name": "status",
+                    "orderable": false,
+                    render: function (data) {
+                        if (data == 1) {
+                            return '<span class="label label-success"> 正常 </span>';
+                        } else {
+                            return '<span class="label label-warning"> 拉黑 </span>';
+                        }
+                    }
+                },
+                {
+                    "data": "status",
+                    "orderable": false,
+                    render: function (data, display, row) {
+                        if (data == 1) {
+                            return '<button type="button" class="btn btn-xs btn-danger to-black" data-id="'+row.id+'">拉黑</button>';
+                        }else{
+                            return '<button type="button" class="btn btn-xs btn-success recover" data-id="'+row.id+'">恢复</button>';
+                        }
+                    }
+                }
+            ],
+            "drawCallback": function (settings) {
+                ajax_datatable.$('.tooltips').tooltip({
+                    placement: 'top',
+                    html: true
+                });
             }
-          }
-        },
-        {
-          "data": "created_at",
-          "name": "created_at",
-          "orderable" : true,
-        },
-        {
-          "data": "updated_at",
-          "name": "updated_at",
-          "orderable" : true,
-        },
-        {
-          "data": "actionButton",
-          "name": "actionButton",
-          "orderable" : false,
-          render: function (data,type,row) {
-              return '<a href="/admin/auto-login/'+row.id+'" ' +
-                  'class="btn btn-xs btn-primary tooltips" data-original-title="登录到用户后台" ' +
-                  'data-placement="top" target="autoLogin">' +
-                  '<i class="fa fa-user"></i>' +
-                  '</a>';
-          }
-        },
-      ],
-      "drawCallback": function( settings ) {
-        ajax_datatable.$('.tooltips').tooltip( {
-          placement : 'top',
-          html : true
         });
-      }
-    });
 
-    dt.on('click', '.filter-submit', function(){
-      ajax_datatable.ajax.reload();
-    });
+        dt.on('click', '.filter-submit', function () {
+            ajax_datatable.ajax.reload();
+        });
 
-    dt.on('click', '.filter-cancel', function(){
-      $('textarea.form-filter, select.form-filter, input.form-filter', dt).each(function() {
-          $(this).val("");
-      });
+        dt.on('click', '.filter-cancel', function () {
+            $('textarea.form-filter, select.form-filter, input.form-filter', dt).each(function () {
+                $(this).val("");
+            });
 
-      $('select.form-filter').selectpicker('refresh');
+            $('select.form-filter').selectpicker('refresh');
 
-      $('input.form-filter[type="checkbox"]', dt).each(function() {
-          $(this).attr("checked", false);
-      });
-      ajax_datatable.ajax.reload();
-    });
+            $('input.form-filter[type="checkbox"]', dt).each(function () {
+                $(this).attr("checked", false);
+            });
+            ajax_datatable.ajax.reload();
+        });
 
-    $('.input-group.date').datepicker({
-      autoclose: true
-    });
-    $(".bs-select").selectpicker({
-      iconBase: "fa",
-      tickIcon: "fa-check"
-    });
-  };
+        dt.on('click', '.recover', function () {
+            var user_id = $(this).attr('data-id');
 
-  return {
-    init : datatableAjax
-  }
+            var index = layer.confirm('你还是爱我的', {
+                icon: 1,
+                title: '提示',
+                btn: ['回来吧!亲','想多了!'] //按钮
+            }, function(){
+                updateStatus(user_id, 1);
+                layer.close(index);
+
+                ajax_datatable.ajax.reload();
+            }, function(){
+
+            });
+        });
+
+        dt.on('click', '.to-black', function () {
+            var user_id = $(this).attr('data-id');
+
+            var index = layer.confirm('确定要拉黑我吗?', {
+                icon: 5,
+                title: '提示',
+                btn: ['去死吧','我错了'] //按钮
+            }, function(){
+                updateStatus(user_id, 0);
+                layer.close(index);
+
+                ajax_datatable.ajax.reload();
+            }, function(){
+
+            });
+        });
+    };
+
+    function updateStatus(user_id, status) {
+        $.ajax({
+            url: "/admin/user/update-status",
+            type: "PUT",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            data:{
+                "status": status,
+                "user_id": user_id
+            }
+        }).done(function(data, textStatus, jqXHR) {
+
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+        }).always(function() {
+
+        });
+    }
+
+
+    return {
+        init: datatableAjax
+    }
 }();

@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
-
+    Route::post('/test', 'TestController@index');
 
     Route::get('wx-login', 'AuthenticateController@wxLogin')->name('wx-login');
 

@@ -15,6 +15,11 @@ use Prettus\Repository\Traits\CacheableRepository;
 class AdminRepositoryEloquent extends BaseRepository implements AdminRepository, CacheableInterface
 {
     use CacheableRepository;
+
+    protected $cacheMinutes = 90;
+
+    protected $cacheOnly = ['all', 'paginate'];
+
     /**
      * Specify Model class name
      *

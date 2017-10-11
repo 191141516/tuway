@@ -11,7 +11,8 @@ return [
         'mime' => [
             'image/png',
             'image/jpeg',
-            'image/jpg'
+            'image/jpg',
+            'image/pjpeg',
         ],
         'size' => 2 * 1024 * 1024,
         'thumb' => [

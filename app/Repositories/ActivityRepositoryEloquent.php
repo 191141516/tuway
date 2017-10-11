@@ -16,6 +16,10 @@ class ActivityRepositoryEloquent extends BaseRepository implements ActivityRepos
 {
     use RepositoryExtensionTrait,CacheableRepository;
 
+    protected $cacheMinutes = 90;
+
+    protected $cacheOnly = ['all', 'paginate'];
+
     /**
      * Specify Model class name.
      *

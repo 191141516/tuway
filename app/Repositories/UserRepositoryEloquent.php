@@ -16,6 +16,10 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository, C
 {
     use CacheableRepository;
 
+    protected $cacheMinutes = 90;
+
+    protected $cacheOnly = ['all', 'paginate'];
+
     /**
      * Specify Model class name
      *

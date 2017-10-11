@@ -8,9 +8,11 @@
 
 namespace App\Service;
 
+use App\Criteria\UserDataTableCriteria;
 use App\Repositories\UserRepository;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Library\Tools\ResponseFind;
 use Library\Wechat\Decode\WXBizDataCrypt;
 
@@ -83,6 +85,33 @@ class UserService
         $user->country = $dataObj->find('country');
         $user->avatar_url = $dataObj->find('avatarUrl');
         $user->union_id = empty($user->union_id) ? $dataObj->find('unionId'): $user->union_id;
+        $user->save();
+    }
+
+    public function datatable(Request $request)
+    {
+        $this->repository->pushCriteria(app(UserDataTableCriteria::class));
+        $data = $this->repository->with(['statistics'])->paginate($request->get('length'));
+
+        $count = $data->total();
+
+        return [
+            'draw' => $request->get('draw'),
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $data->items(),
+        ];
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $user_id = $request->get('user_id');
+        $status = $request->get('status');
+
+        /** @var \App\Entities\User $user */
+        $user = $this->repository->find($user_id);
+        $user->status = $status;
+
         $user->save();
     }
 }

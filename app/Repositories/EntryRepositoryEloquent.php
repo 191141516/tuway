@@ -16,6 +16,10 @@ class EntryRepositoryEloquent extends BaseRepository implements EntryRepository,
 {
     use CacheableRepository;
 
+    protected $cacheMinutes = 90;
+
+    protected $cacheOnly = ['all', 'paginate'];
+
     /**
      * Specify Model class name
      *

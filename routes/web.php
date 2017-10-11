@@ -29,5 +29,13 @@ Route::group(['middleware' => ['web'],'namespace' => 'Admin', 'as' => 'admin.', 
 
         Route::get('/', 'DashboardController@index')->name('dashboard');
 
+        //用户管理
+        Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
+            Route::get('/', 'UserController@index')->name('index');
+
+            Route::get('/ajax', 'UserController@ajax')->name('index');
+
+            Route::put('/update-status', 'UserController@updateStatus')->name('update-status');
+        });
     });
 });

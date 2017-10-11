@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Events\EntryCreatedEvent;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -18,6 +19,10 @@ class Entry extends Model implements Transformable
         'id_card',
         'gender',
         'age',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => EntryCreatedEvent::class
     ];
 
     public function user()

@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Events\PublishActivityEvent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
@@ -36,6 +37,10 @@ class Activity extends Model implements Transformable
         'start_date',
         'end_date',
         'status',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => PublishActivityEvent::class
     ];
 
     /**
