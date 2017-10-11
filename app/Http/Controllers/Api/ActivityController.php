@@ -36,8 +36,8 @@ class ActivityController extends ApiController
      */
     public function create(ActivityCreateRequest $activityCreateRequest)
     {
-        $this->activityService->create($activityCreateRequest);
-        return $this->success();
+        $activity_id = $this->activityService->create($activityCreateRequest);
+        return $this->success(['activity_id' => $activity_id]);
     }
 
     /**
