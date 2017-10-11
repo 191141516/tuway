@@ -146,7 +146,7 @@ class ActivityService
     {
         $relations = [
             'user' => function ($query) {
-                $query->select(['id', 'name']);
+                $query->select(['id', 'name', 'avatar_url']);
             },
             'entryUser' => function ($query) {
                 $query->select(['users.avatar_url'])->orderBy('entries.created_at');
