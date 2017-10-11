@@ -40,7 +40,7 @@ class ActivityService
         $activity_id = 0;
 
         \DB::transaction(function () use ($row, &$activity_id) {
-            $this->activityRepository->create($row);
+            $activity_id = $this->activityRepository->create($row);
             //移动图片
             Common::move($this->from, $this->to);
             //生成缩略图
