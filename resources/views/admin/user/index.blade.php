@@ -59,7 +59,8 @@
                                 <td></td>
                                 <td>
                                     <div class="form-group form-md-line-input">
-                                        <select class="bs-select form-control form-filter bs-select-hidden" data-show-subtext="true" name="status">
+                                        <select class="bs-select form-control form-filter bs-select-hidden"
+                                                data-show-subtext="true" name="status">
                                             <option value="" data-icon="fa-glass icon-success">全部</option>
                                             <option value="1" data-icon="fa fa-paw"> 正常</option>
                                             <option value="0" data-icon="fa fa-navicon"> 拉黑</option>

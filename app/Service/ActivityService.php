@@ -9,6 +9,7 @@
 namespace App\Service;
 
 use App\Criteria\Activity\ActivityPaginateCriteria;
+use App\Criteria\UserIdCriteria;
 use App\Entities\Activity;
 use App\Repositories\ActivityRepository;
 use Carbon\Carbon;
@@ -149,15 +150,21 @@ class ActivityService
                 $query->select(['id', 'name', 'avatar_url']);
             },
             'entryUser' => function ($query) {
-                $query->select(['users.avatar_url'])->orderBy('entries.created_at');
+                $query->select(['users.avatar_url', 'users.id'])->orderBy('entries.created_at');
             },
         ];
 
         $activity = $this->activityRepository->with($relations)->find($id);
 
-        $activity->setAttribute('edit', $activity->user_id == \Auth::guard('api')->user()->id);
+        $user_id = \Auth::guard('api')->user()->id;
 
-        $activity->setRelation('entryUser', $activity->getRelation('entryUser')->pluck('avatar_url'));
+        $activity->setAttribute('edit', $activity->user_id == $user_id);
+
+        $entryUser = $activity->getRelation('entryUser');
+
+        $activity->setAttribute('is_entry', in_array($user_id, $entryUser->pluck('id')->toArray()));
+
+        $activity->setRelation('entryUser', $entryUser->pluck('avatar_url'));
 
         return $activity;
     }
@@ -167,6 +174,12 @@ class ActivityService
         return $this->activityRepository->find($id, $columns);
     }
 
+    /**
+     * 修改活动
+     * @param $id
+     * @param Request $request
+     * @throws \Exception
+     */
     public function edit($id, Request $request)
     {
         $row = $request->all();
@@ -197,5 +210,54 @@ class ActivityService
             }
         });
     }
+
+    /**
+     * 用户删除活动
+     * @param $id
+     */
+    public function userDelete($id)
+    {
+        $this->activityRepository->pushCriteria(app(UserIdCriteria::class));
+        $this->delete($id);
+    }
+
+    /**
+     * 删除活动
+     * @param $id
+     * @throws \Exception
+     */
+    public function delete($id)
+    {
+        $activity = $this->activityRepository->with(['entry'])->find($id);
+
+        if (empty($activity)) {
+            throw new \Exception('活动不存在');
+        }
+
+        \DB::transaction(function () use ($activity) {
+            $activity->entry()->delete();
+            $activity->delete();
+        });
+    }
+
+    /**
+     * 获取必填项
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function option($id)
+    {
+        $activity = $this->activityRepository->find($id);
+
+        if (empty($activity)) {
+            throw new \Exception('活动不存在');
+        }
+
+        /** @var OptionService $optionService */
+        $optionService = app(OptionService::class);
+        return $optionService->getInfoByIds($activity->options, ['id', 'name', 'key', 'type', 'option_value']);
+    }
+
 
 }

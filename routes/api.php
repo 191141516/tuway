@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
-    Route::post('/test', 'TestController@index');
+    Route::get('/test', 'TestController@index');
 
     Route::get('wx-login', 'AuthenticateController@wxLogin')->name('wx-login');
 
@@ -37,6 +37,10 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
             Route::get('/{id}', 'ActivityController@detail')->name('detail');
             //活动修改
             Route::put('/{id}', 'ActivityController@edit')->name('edit');
+            //删除活动
+            Route::delete('/{id}', 'ActivityController@destroy')->name('destroy');
+            //活动报名项
+            Route::get('/{id}/option', 'ActivityController@option')->name('option');
         });
 
         //报名

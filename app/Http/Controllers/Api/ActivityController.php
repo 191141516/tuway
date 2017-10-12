@@ -51,9 +51,36 @@ class ActivityController extends ApiController
         return $this->success($data);
     }
 
+    /**
+     * 修改活动
+     * @param $id
+     * @param ActivityUpdateRequest $request
+     * @return mixed
+     */
     public function edit($id, ActivityUpdateRequest $request)
     {
         $this->activityService->edit($id, $request);
         return $this->success();
+    }
+
+    /**
+     * 删除活动
+     * @param $id
+     */
+    public function destroy($id)
+    {
+        $this->activityService->delete($id);
+        return $this->success();
+    }
+
+
+    /**
+     * 获取报名项
+     * @param $id
+     */
+    public function option($id)
+    {
+        $data = $this->activityService->option($id);
+        return $this->success($data);
     }
 }

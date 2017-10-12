@@ -53,11 +53,11 @@ class Activity extends Model implements Transformable
 
     /**
      * 报名信息
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function entry()
     {
-        return $this->belongsTo(Entry::class, 'activity_id');
+        return $this->hasMany(Entry::class, 'activity_id', 'id');
     }
 
     /**
