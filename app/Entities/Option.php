@@ -17,7 +17,8 @@ class Option extends Model implements Transformable
         'type',
         'rule',
         'option_value',
-        'messages'
+        'messages',
+        'placeholder'
     ];
 
     public function getOptionValueAttribute($value)

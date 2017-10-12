@@ -256,7 +256,7 @@ class ActivityService
 
         /** @var OptionService $optionService */
         $optionService = app(OptionService::class);
-        return $optionService->getInfoByIds($activity->options, ['id', 'name', 'key', 'type', 'option_value']);
+        return $optionService->getInfoByIds($activity->options, ['id', 'name', 'key', 'type', 'option_value', 'placeholder']);
     }
 
 
