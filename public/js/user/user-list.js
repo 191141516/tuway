@@ -41,11 +41,13 @@ var TableDatatablesAjax = function () {
                 },
                 {
                     "data": "statistics.join",
-                    "name": "statistics.join"
+                    "name": "statistics.join",
+                    "orderable": false
                 },
                 {
                     "data": "statistics.publish",
-                    "name": "statistics.publish"
+                    "name": "statistics.publish",
+                    "orderable": false
                 },
                 {
                     "data": "status",

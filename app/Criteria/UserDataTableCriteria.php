@@ -56,7 +56,7 @@ class UserDataTableCriteria implements CriteriaInterface
             $orderDir = $orders['0']['dir'];
             $model = $model->orderBy($orderName, $orderDir);
         }else{
-            $model = $model->orderBy('updated_at', 'desc');
+            $model = $model->orderBy('id', 'desc');
         }
 
         $page = $start ? floor($start / $length) + 1 : 1;

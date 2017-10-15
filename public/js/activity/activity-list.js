@@ -42,6 +42,7 @@ var TableDatatablesAjax = function () {
                 {
                     "data": "state",
                     "name": "state",
+                    "orderable": false,
                     render: function (data) {
                         if (data == 1) {
                             return '<span class="label label-success"> 正常 </span>';
