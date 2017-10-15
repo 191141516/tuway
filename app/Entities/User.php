@@ -37,6 +37,11 @@ class User extends \App\User implements Transformable
         'saved' => UserCreatedEvent::class
     ];
 
+    /** 正常 */
+    const STATUS_NORMAL = 1;
+    /** 拉黑 */
+    const STATUS_BLACK = 0;
+
     /**
      * 发布的活动
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

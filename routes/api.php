@@ -30,24 +30,24 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
         //活动
         Route::group(['prefix' => 'activity', 'as' => 'activity.'], function(){
             //发布活动
-            Route::post('/', 'ActivityController@create')->name('create');
+            Route::post('/', 'ActivityController@create')->name('create')->middleware('user_status_check');;
             //活动列表
             Route::get('/', 'ActivityController@index')->name('list');
             //活动详情
             Route::get('/{id}', 'ActivityController@detail')->name('detail');
             //活动修改
-            Route::put('/{id}', 'ActivityController@edit')->name('edit');
+            Route::put('/{id}', 'ActivityController@edit')->name('edit')->middleware('user_status_check');;
             //删除活动
-            Route::delete('/{id}', 'ActivityController@destroy')->name('destroy');
+            Route::delete('/{id}', 'ActivityController@destroy')->name('destroy')->middleware('user_status_check');;
             //活动报名项
             Route::get('/{id}/option', 'ActivityController@option')->name('option');
         });
 
         //报名
         Route::group(['prefix' => 'entry', 'as' => 'entry.'], function(){
-            Route::post('/', 'EntryController@create')->name('create');
+            Route::post('/', 'EntryController@create')->name('create')->middleware('user_status_check');
             //活动报名名单
-            Route::get('/entry-list', 'EntryController@entryList')->name('entry-list');
+            Route::get('/entry-list', 'EntryController@entryList')->name('entry-list')->middleware('user_status_check');;
         });
 
         //上传

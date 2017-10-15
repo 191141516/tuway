@@ -5,6 +5,7 @@ var TableDatatablesAjax = function () {
 
         dt = $('#datatable_ajax');
         ajax_datatable = dt.DataTable({
+            "processing": true,
             "language": {
                 "loadingRecords": "请等待，数据正在加载中......"
             },
