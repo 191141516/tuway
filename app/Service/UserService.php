@@ -19,11 +19,11 @@ use Library\Wechat\Decode\WXBizDataCrypt;
 class UserService
 {
     /** @var UserRepository  */
-    protected $repository;
+    protected $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {
-        $this->repository = $userRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -37,7 +37,7 @@ class UserService
             'open_id' => $row['open_id']
         ];
 
-        return $this->repository->updateOrCreate($attributes, $row);
+        return $this->userRepository->updateOrCreate($attributes, $row);
     }
 
     /**
@@ -90,8 +90,8 @@ class UserService
 
     public function datatable(Request $request)
     {
-        $this->repository->pushCriteria(app(UserDataTableCriteria::class));
-        $data = $this->repository->with(['statistics'])->paginate($request->get('length'));
+        $this->userRepository->pushCriteria(app(UserDataTableCriteria::class));
+        $data = $this->userRepository->with(['statistics'])->paginate($request->get('length'));
 
         $count = $data->total();
 
@@ -109,7 +109,7 @@ class UserService
         $status = $request->get('status');
 
         /** @var \App\Entities\User $user */
-        $user = $this->repository->find($user_id);
+        $user = $this->userRepository->find($user_id);
         $user->status = $status;
 
         $user->save();

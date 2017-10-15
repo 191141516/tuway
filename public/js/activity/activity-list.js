@@ -6,9 +6,6 @@ var TableDatatablesAjax = function () {
         dt = $('#datatable_ajax');
         ajax_datatable = dt.DataTable({
             "processing": true,
-            "language": {
-                "loadingRecords": "请等待，数据正在加载中......"
-            },
             "serverSide": true,
             "searching": false,
             "ajax": {
@@ -110,10 +107,11 @@ var TableDatatablesAjax = function () {
                     "state": 1,
                     "activity_id": activity_id
                 };
-                ajax(updateState_url, data, 'PUT');;
-                layer.close(index);
+                ajax(updateState_url, data, 'PUT', function () {
+                    layer.close(index);
+                    ajax_datatable.ajax.reload();
+                });
 
-                ajax_datatable.ajax.reload();
             }, function(){
 
             });
@@ -131,10 +129,11 @@ var TableDatatablesAjax = function () {
                     "state": 0,
                     "activity_id": activity_id
                 };
-                ajax(updateState_url, data, 'PUT');
-                layer.close(index);
+                ajax(updateState_url, data, 'PUT', function () {
+                    layer.close(index);
+                    ajax_datatable.ajax.reload();
+                });
 
-                ajax_datatable.ajax.reload();
             }, function(){
 
             });
@@ -153,10 +152,11 @@ var TableDatatablesAjax = function () {
                 btn: ['成全你','我错了'] //按钮
             }, function(){
 
-                ajax(url+activity_id, {}, 'DELETE');
-                layer.close(index);
+                ajax(url+activity_id, {}, 'DELETE', function(){
+                    layer.close(index);
+                    ajax_datatable.ajax.reload();
+                });
 
-                ajax_datatable.ajax.reload();
             }, function(){
 
             });

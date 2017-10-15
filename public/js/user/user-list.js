@@ -1,5 +1,7 @@
 var TableDatatablesAjax = function () {
     var datatableAjax = function () {
+        var update_status_url = '/admin/user/update-status';
+
         dt = $('#datatable_ajax');
         ajax_datatable = dt.DataTable({
             "processing": true,
@@ -102,10 +104,12 @@ var TableDatatablesAjax = function () {
                 title: '提示',
                 btn: ['回来吧!亲','想多了!'] //按钮
             }, function(){
-                updateStatus(user_id, 1);
-                layer.close(index);
 
-                ajax_datatable.ajax.reload();
+                ajax(update_status_url, { "status": 1, "user_id": user_id}, 'PUT', function(){
+                    layer.close(index);
+                    ajax_datatable.ajax.reload();
+                });
+
             }, function(){
 
             });
@@ -119,35 +123,36 @@ var TableDatatablesAjax = function () {
                 title: '提示',
                 btn: ['去死吧','我错了'] //按钮
             }, function(){
-                updateStatus(user_id, 0);
-                layer.close(index);
 
-                ajax_datatable.ajax.reload();
+                ajax(update_status_url, { "status": 0, "user_id": user_id}, 'PUT', function(){
+                    layer.close(index);
+                    ajax_datatable.ajax.reload();
+                });
             }, function(){
 
             });
         });
     };
 
-    function updateStatus(user_id, status) {
+    function ajax(url, data, method) {
+        var success_callback = arguments[3] || function(){};
+        var fail_callback = arguments[4] || function(){};
+
         var index = layer.load(0, {
             shade: [0.4,'#B3B3B3'] //0.1透明度的白色背景
         });
 
         $.ajax({
-            url: "/admin/user/update-status",
-            type: "PUT",
+            url: url,
+            type: method,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             },
-            data:{
-                "status": status,
-                "user_id": user_id
-            }
+            data:data,
         }).done(function(data, textStatus, jqXHR) {
-
+            success_callback(data, textStatus, jqXHR);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-
+            fail_callback(jqXHR, textStatus, errorThrown);
         }).always(function() {
             layer.close(index);
         });
