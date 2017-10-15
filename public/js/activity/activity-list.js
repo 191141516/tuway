@@ -13,8 +13,8 @@ var TableDatatablesAjax = function () {
                 "data": function (d) {
                     d.title = $('.filter input[name="title"]').val();
                     d.status = $('.filter select[name="state"] option:selected').val();
-                    d.from = $('.filter select[name="from"] option:selected').val();
-                    d.to = $('.filter select[name="to"] option:selected').val();
+                    d.from = $('.filter input[name="from"]').val();
+                    d.to = $('.filter input[name="to"]').val();
                 }
             },
             "pagingType": "bootstrap_full_number",
@@ -141,7 +141,9 @@ var TableDatatablesAjax = function () {
         });
 
         $('.input-group.date').datepicker({
-            autoclose: true
+            autoclose: true,
+            language: 'zh-CN',
+            todayHighlight: true
         });
 
         dt.on('click', '.del', function(){
