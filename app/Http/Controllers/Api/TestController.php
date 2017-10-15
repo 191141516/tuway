@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Option;
+use App\Service\ActivityService;
 use App\Service\EntryService;
 use App\Service\UploadService;
 use Carbon\Carbon;
@@ -12,10 +13,8 @@ class TestController extends ApiController
 {
     public function index(Request $request)
     {
-        $uploadService = app(UploadService::class);
-
-        $filename = $uploadService->img();
-        return $this->success(['url' => $filename]);
+        $activityService = app(ActivityService::class);
+        return $activityService->delete(2);
 
 //        $entryService = app(EntryService::class);
 //        $data = $entryService->entryList($request);

@@ -103,7 +103,7 @@
         <!-- END CONTAINER -->
         <div class="page-footer">
             <div class="page-footer-inner"> 
-                2016 © ez-wms.com
+                2016 © quoyle.info
                 <span id="online"></span>
             </div>
             <div class="scroll-to-top">
