@@ -58,7 +58,7 @@ class ActivityDataTableCriteria implements CriteriaInterface
         }
 
         if ($to) {
-            $model->where('updated_at', '<=', $to);
+            $model->where('created_at', '<=', $to);
         }
 
         if($orders){
