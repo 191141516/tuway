@@ -9,6 +9,7 @@
 namespace App\Service;
 
 use App\Criteria\Activity\ActivityPaginateCriteria;
+use App\Criteria\ActivityDataTableCriteria;
 use App\Criteria\UserIdCriteria;
 use App\Entities\Activity;
 use App\Repositories\ActivityRepository;
@@ -145,16 +146,7 @@ class ActivityService
      */
     public function detail($id)
     {
-        $relations = [
-            'user' => function ($query) {
-                $query->select(['id', 'name', 'avatar_url']);
-            },
-            'entryUser' => function ($query) {
-                $query->select(['users.avatar_url', 'users.id'])->orderBy('entries.created_at');
-            },
-        ];
-
-        $activity = $this->activityRepository->with($relations)->find($id);
+        $activity = $this->getActivityDetail($id);
 
         $user_id = \Auth::guard('api')->user()->id;
 
@@ -260,4 +252,68 @@ class ActivityService
     }
 
 
+    public function datatable(Request $request)
+    {
+        $this->activityRepository->pushCriteria(app(ActivityDataTableCriteria::class));
+        $data = $this->activityRepository->paginate($request->get('length'));
+
+        $count = $data->total();
+
+        return [
+            'draw' => $request->get('draw'),
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'data' => $data->items(),
+        ];
+    }
+
+    /**
+     * 更改state
+     * @param Request $request
+     * @throws \Exception
+     */
+    public function updateState(Request $request)
+    {
+        $activity_id = $request->get('activity_id');
+        $state = $request->get('state');
+
+        $activity = $this->activityRepository->find($activity_id);
+
+        if (empty($activity)) {
+            throw new \Exception('活动不存在');
+        }
+
+        $activity->state = $state;
+        $activity->save();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    private function getActivityDetail($id)
+    {
+        $relations = [
+            'user' => function ($query) {
+                $query->select(['id', 'name', 'avatar_url']);
+            },
+            'entryUser' => function ($query) {
+                $query->select(['users.avatar_url', 'users.id'])->orderBy('entries.created_at');
+            },
+        ];
+
+        $activity = $this->activityRepository->with($relations)->find($id);
+        return $activity;
+    }
+
+
+    public function info($id)
+    {
+        $activity = $this->getActivityDetail($id);
+
+        $entryUser = $activity->getRelation('entryUser');
+
+        $activity->setRelation('entryUser', $entryUser->pluck('avatar_url'));
+        return $activity;
+    }
 }

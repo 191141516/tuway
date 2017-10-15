@@ -18,10 +18,19 @@ class Activity extends Model implements Transformable
     const STATUS_STARTING = 2;
     /** 结束 */
     const STATUS_END = 3;
+
+
     /** 我发布的 */
     const TYPE_MY = 1;
     /** 我参与的 */
     const TYPE_JOIN = 2;
+
+
+    /** 正常 */
+    const STATE_NORMAL = 1;
+    /** 拉黑 */
+    const STATE_BLACK = 0;
+
 
     protected $fillable = [
         'user_id',
@@ -37,6 +46,7 @@ class Activity extends Model implements Transformable
         'start_date',
         'end_date',
         'status',
+        'state',
     ];
 
     protected $dispatchesEvents = [

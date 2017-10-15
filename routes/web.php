@@ -37,5 +37,19 @@ Route::group(['middleware' => ['web'],'namespace' => 'Admin', 'as' => 'admin.', 
 
             Route::put('/update-status', 'UserController@updateStatus')->name('update-status');
         });
+
+
+        //活动管理
+        Route::group(['prefix' => 'activity', 'as' => 'activity.'], function(){
+            Route::get('/', 'ActivityController@index')->name('index');
+
+            Route::get('/ajax', 'ActivityController@ajax')->name('index');
+
+            Route::put('/update-state', 'ActivityController@updateState')->name('update-state');
+
+            Route::delete('/{id}', 'ActivityController@destroy')->name('delete');
+
+            Route::get('/{id}', 'ActivityController@info')->name('detail');
+        });
     });
 });

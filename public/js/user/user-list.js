@@ -2,7 +2,10 @@ var TableDatatablesAjax = function () {
     var datatableAjax = function () {
         dt = $('#datatable_ajax');
         ajax_datatable = dt.DataTable({
-            "processing": true,
+            // "processing": true,
+            "language": {
+                "loadingRecords": "请等待，数据正在加载中......"
+            },
             "serverSide": true,
             "searching": false,
             "ajax": {
@@ -59,7 +62,7 @@ var TableDatatablesAjax = function () {
                     "orderable": false,
                     render: function (data, display, row) {
                         if (data == 1) {
-                            return '<button type="button" class="btn btn-xs btn-danger to-black" data-id="'+row.id+'">拉黑</button>';
+                            return '<button type="button" class="btn btn-xs btn-warning to-black" data-id="'+row.id+'">拉黑</button>';
                         }else{
                             return '<button type="button" class="btn btn-xs btn-success recover" data-id="'+row.id+'">恢复</button>';
                         }
@@ -95,7 +98,7 @@ var TableDatatablesAjax = function () {
             var user_id = $(this).attr('data-id');
 
             var index = layer.confirm('你还是爱我的', {
-                icon: 1,
+                icon: 6,
                 title: '提示',
                 btn: ['回来吧!亲','想多了!'] //按钮
             }, function(){
@@ -127,6 +130,10 @@ var TableDatatablesAjax = function () {
     };
 
     function updateStatus(user_id, status) {
+        var index = layer.load(0, {
+            shade: [0.4,'#B3B3B3'] //0.1透明度的白色背景
+        });
+
         $.ajax({
             url: "/admin/user/update-status",
             type: "PUT",
@@ -142,7 +149,7 @@ var TableDatatablesAjax = function () {
         }).fail(function(jqXHR, textStatus, errorThrown) {
 
         }).always(function() {
-
+            layer.close(index);
         });
     }
 
