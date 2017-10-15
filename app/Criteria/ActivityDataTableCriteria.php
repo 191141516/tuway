@@ -38,6 +38,8 @@ class ActivityDataTableCriteria implements CriteriaInterface
 
         $name = $this->request->get('name' ,'');
         $status = $this->request->get('status' ,'');
+        $from = $this->request->get('from' ,'');
+        $to = $this->request->get('to' ,'');
 
         if($name){
             if($search_pattern){
@@ -49,6 +51,14 @@ class ActivityDataTableCriteria implements CriteriaInterface
 
         if ($status) {
             $model->where('status', $status);
+        }
+
+        if ($from) {
+            $model->where('created_at', '>=', $from);
+        }
+
+        if ($to) {
+            $model->where('updated_at', '<=', $to);
         }
 
         if($orders){
