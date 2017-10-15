@@ -53,6 +53,10 @@ class ActivityDataTableCriteria implements CriteriaInterface
             $model->where('status', $status);
         }
 
+        if ($from && $from == $to) {
+            $to = null;
+        }
+
         if ($from) {
             $model->where('created_at', '>=', $from);
         }
