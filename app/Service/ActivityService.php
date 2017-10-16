@@ -220,7 +220,7 @@ class ActivityService
      */
     public function delete($id)
     {
-        $activity = $this->activityRepository->with(['entry'])->find($id);
+        $activity = $this->activityRepository->find($id);
 
         if (empty($activity)) {
             throw new \Exception('活动不存在');
