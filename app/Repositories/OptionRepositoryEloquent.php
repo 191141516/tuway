@@ -12,13 +12,8 @@ use Prettus\Repository\Traits\CacheableRepository;
  * Class OptionRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class OptionRepositoryEloquent extends BaseRepository implements OptionRepository, CacheableInterface
+class OptionRepositoryEloquent extends BaseRepository implements OptionRepository
 {
-    use CacheableRepository;
-
-    protected $cacheMinutes = 90;
-
-    protected $cacheOnly = ['all', 'paginate'];
 
     /**
      * Specify Model class name

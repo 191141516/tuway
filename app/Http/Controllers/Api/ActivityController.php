@@ -69,7 +69,7 @@ class ActivityController extends ApiController
      */
     public function destroy($id)
     {
-        $this->activityService->delete($id);
+        $this->activityService->userDelete($id);
         return $this->success();
     }
 

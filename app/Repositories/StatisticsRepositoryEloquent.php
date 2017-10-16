@@ -12,13 +12,8 @@ use Prettus\Repository\Traits\CacheableRepository;
  * Class StatisticsRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class StatisticsRepositoryEloquent extends BaseRepository implements StatisticsRepository, CacheableInterface
+class StatisticsRepositoryEloquent extends BaseRepository implements StatisticsRepository
 {
-    use CacheableRepository;
-
-    protected $cacheMinutes = 90;
-
-    protected $cacheOnly = ['all', 'paginate'];
 
     /**
      * Specify Model class name
