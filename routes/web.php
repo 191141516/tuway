@@ -11,10 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    abort(403, '');
+//});
 
 //后台路由
 Route::group(['middleware' => ['web'],'namespace' => 'Admin', 'as' => 'admin.', 'prefix' => 'admin'], function(){
