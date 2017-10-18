@@ -15,6 +15,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ApiHandler
@@ -36,6 +37,7 @@ class ApiHandler
         ModelNotFoundException::class => ['系统异常', 500],
         ValidationException::class => ['数据验证错误', 601],
         Exception::class => ['操作失败', 602],
+        MethodNotAllowedHttpException::class => ['接口不存在', 404],
     ];
 
     public function __construct(Request $request, \Exception $exception)
