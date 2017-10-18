@@ -11,5 +11,13 @@ namespace App\Traits;
 
 trait RepositoryExtensionTrait
 {
-
+    /**
+     * 可以批量插入
+     * @param $rows
+     * @return mixed
+     */
+    public function insert($rows)
+    {
+        return $this->model->insert($rows);
+    }
 }

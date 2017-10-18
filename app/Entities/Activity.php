@@ -49,6 +49,16 @@ class Activity extends Model implements Transformable
         'state',
     ];
 
+    protected $week = [
+        '星期日',
+        '星期一',
+        '星期二',
+        '星期三',
+        '星期四',
+        '星期五',
+        '星期六',
+    ];
+
     protected $dispatchesEvents = [
         'created' => PublishActivityEvent::class
     ];
@@ -79,6 +89,15 @@ class Activity extends Model implements Transformable
         return $this->belongsToMany(User::class, 'entries', 'activity_id', 'user_id');
     }
 
+    /**
+     * 活动图片
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activityImage()
+    {
+        return $this->hasMany(ActivityImage::class, 'activity_id', 'id');
+    }
+
     public function getStartDateTextAttribute()
     {
         $now = Carbon::now();
@@ -96,25 +115,33 @@ class Activity extends Model implements Transformable
 
     public function getActivityDateTextAttribute()
     {
-        $week = [
-            '星期日',
-            '星期一',
-            '星期二',
-            '星期三',
-            '星期四',
-            '星期五',
-            '星期六',
-        ];
-
         $start_date = new Carbon($this->start_date);
         $end_date = new Carbon($this->end_date);
         $format = 'Ymd';
         $show_format = 'm月d日';
 
         if ($start_date->format($format) === $end_date->format($format)) {
-            $week_str = $start_date->format($show_format) . ' ' . $week[$start_date->dayOfWeek];
+            $week_str = $start_date->format($show_format) . ' ' . $this->week[$start_date->dayOfWeek];
         } else {
             $week_str = $start_date->format($show_format) . '-' . $end_date->format($show_format);
+        }
+
+        return $week_str;
+    }
+
+    public function getDetailActivityDateTextAttribute()
+    {
+        $start_date = new Carbon($this->start_date);
+        $end_date = new Carbon($this->end_date);
+        $format = 'Ymd';
+        $show_format = 'm月d日';
+        $time_format = 'H:i';
+
+        if ($start_date->format($format) === $end_date->format($format)) {
+            $week_str = $start_date->format($show_format) . ' ' . $this->week[$start_date->dayOfWeek];
+        } else {
+            $week_str = $start_date->format($show_format).'(' .$this->week[$start_date->dayOfWeek].')'.$start_date->format($time_format)
+                . '-' . $end_date->format($show_format).'(' .$this->week[$end_date->dayOfWeek].')'.$end_date->format($time_format);
         }
 
         return $week_str;
