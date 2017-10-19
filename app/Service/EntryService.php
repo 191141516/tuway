@@ -61,7 +61,7 @@ class EntryService
 
     private function checkActivityTotal(Activity $activity)
     {
-        if ($activity->total <= $activity->num) {
+        if ($activity->total != 0 && $activity->total <= $activity->num) {
             throw new \Exception('活动报名人数已满');
         }
     }
