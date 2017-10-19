@@ -104,7 +104,10 @@ class Activity extends Model implements Transformable
         $createDate = new Carbon($this->created_at);
         $diff_hours = $now->diffInHours($createDate);
 
-        if ($diff_hours < env('DIFF_HOURS')) {
+        if ($diff_hours < 1) {
+            $diff_minutes = $now->diffInMinutes($createDate);
+            $text = $diff_minutes . '分钟前';
+        } else if ($diff_hours < env('DIFF_HOURS')) {
             $text = $diff_hours . '小时前';
         } else {
             $text = $createDate->format('m/d H:i');
@@ -140,8 +143,8 @@ class Activity extends Model implements Transformable
         if ($start_date->format($format) === $end_date->format($format)) {
             $week_str = $start_date->format($show_format) . ' ' . $this->week[$start_date->dayOfWeek];
         } else {
-            $week_str = $start_date->format($show_format).'(' .$this->week[$start_date->dayOfWeek].')'.$start_date->format($time_format)
-                . '-' . $end_date->format($show_format).'(' .$this->week[$end_date->dayOfWeek].')'.$end_date->format($time_format);
+            $week_str = $start_date->format($show_format) . '(' . $this->week[$start_date->dayOfWeek] . ')' . $start_date->format($time_format)
+                . '-' . $end_date->format($show_format) . '(' . $this->week[$end_date->dayOfWeek] . ')' . $end_date->format($time_format);
         }
 
         return $week_str;
@@ -149,7 +152,7 @@ class Activity extends Model implements Transformable
 
     public function setOptionsAttribute($value)
     {
-        $arr = is_array($value) ? $value: [$value];
+        $arr = is_array($value) ? $value : [$value];
         $this->attributes['options'] = json_encode($arr);
     }
 
@@ -160,6 +163,6 @@ class Activity extends Model implements Transformable
 
     public function getPicAttribute($value)
     {
-        return asset(env('UPLOAD_IMG_PATH').$value);
+        return asset(env('UPLOAD_IMG_PATH') . $value);
     }
 }
