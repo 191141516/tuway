@@ -36,10 +36,10 @@ class ActivityService
     public function create(Request $request)
     {
         $row = $request->all();
-        $row['pic'] = $this->getImgPath($row['pic']);
-        $row['user_id'] = $request->user('api')->id;
-
         $images = $this->transformImg($request->get('images', array()));
+
+        $row['pic'] = reset($images);
+        $row['user_id'] = $request->user('api')->id;
 
         $activity_id = 0;
 
@@ -85,6 +85,7 @@ class ActivityService
     {
         $this->update2Starting();
         $this->update2End();
+
     }
 
     /**
@@ -195,7 +196,9 @@ class ActivityService
         $row = $request->all();
         $activity = $this->activityRepository->find($id);
 
-        $images = $this->updateImages($request->get('images', array()));
+        $images_arr = $request->get('images', array());
+
+        $images = $this->updateImages($images_arr);
 
         if (empty($activity)) {
             throw new \Exception('活动不存在');
@@ -204,25 +207,26 @@ class ActivityService
         $update_pic = false;
         $old_pic = $activity->pic;
 
-        if ($activity->pic != $row['pic']) {
-            $row['pic'] = $this->getImgPath($row['pic']);
+        if ($activity->pic != reset($images_arr)) {
+            $row['pic'] = reset($images);
             $update_pic = true;
         }else{
             unset($row['pic']);
         }
 
         \DB::transaction(function () use ($activity, $row, $update_pic, $old_pic, $images) {
-            $activity->update($row);
 
             $activityImageService = app(ActivityImageService::class);
             $activityImageService->updateActivityImages($activity, $images);
 
+            $activity->update($row);
+
             if ($update_pic) {
                 $this->getImgPath($old_pic, true);
-
-                $this->moveImg();
-                $this->delImg();
             }
+
+            $this->moveImg();
+            $this->delImg();
         });
     }
 

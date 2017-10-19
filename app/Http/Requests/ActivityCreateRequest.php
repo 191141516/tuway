@@ -27,7 +27,6 @@ class ActivityCreateRequest extends FormRequest
         return [
             'title' => 'required|min:2|max:120',
             'content' => 'required|min:10|max:2500',
-            'pic' => 'required|url',
             'total' => 'required|integer|max:10000',
             'phone' => [
                 'required',
@@ -38,7 +37,7 @@ class ActivityCreateRequest extends FormRequest
             'options' => 'required|array',
             'start_date' => 'required|after_or_equal:'.Carbon::now()->addMinute(1)->format('Y-m-d H:i'),
             'end_date' => 'required|after:start_date',
-            'images' => 'array'
+            'images' => 'required|array'
         ];
     }
 }

@@ -21,7 +21,8 @@ class UserController extends ApiController
             'encryptedData' => 'required'
         ]);
 
-        $this->service->saveWXInfo($request->get('encryptedData'), $request->get('iv'), $request->user());
+        $user = $request->user('api');
+        $this->service->saveWXInfo($request->get('encryptedData'), $request->get('iv'), $user);
 
         return $this->success();
     }
