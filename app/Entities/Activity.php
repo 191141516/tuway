@@ -107,7 +107,7 @@ class Activity extends Model implements Transformable
         if ($diff_minutes < 60) {
             $text = $diff_minutes . '分钟前';
         } else if ($diff_minutes < env('DIFF_HOURS', 5) * 60) {
-            $text = $diff_minutes / 60 . '小时前';
+            $text = intval($diff_minutes / 60) . '小时前';
         } else {
             $text = $createDate->format('m/d H:i');
         }
