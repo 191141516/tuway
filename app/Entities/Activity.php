@@ -102,13 +102,12 @@ class Activity extends Model implements Transformable
     {
         $now = Carbon::now();
         $createDate = new Carbon($this->created_at);
-        $diff_hours = $now->diffInHours($createDate);
+        $diff_minutes = $now->diffInMinutes($createDate);
 
-        if ($diff_hours < 1) {
-            $diff_minutes = $now->diffInMinutes($createDate);
+        if ($diff_minutes < 60) {
             $text = $diff_minutes . '分钟前';
-        } else if ($diff_hours < env('DIFF_HOURS')) {
-            $text = $diff_hours . '小时前';
+        } else if ($diff_minutes < env('DIFF_HOURS', 5) * 60) {
+            $text = $diff_minutes / 60 . '小时前';
         } else {
             $text = $createDate->format('m/d H:i');
         }
