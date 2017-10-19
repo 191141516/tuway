@@ -196,13 +196,16 @@ class ActivityService
         $row = $request->all();
         $activity = $this->activityRepository->find($id);
 
-        $images_arr = $request->get('images', array());
-
-        $images = $this->updateImages($images_arr);
-
         if (empty($activity)) {
             throw new \Exception('活动不存在');
         }
+
+        if ($activity->status != Activity::STATUS_APPLYING) {
+            throw new \Exception('当前状态活动不能修改');
+        }
+
+        $images_arr = $request->get('images', array());
+        $images = $this->updateImages($images_arr);
 
         $update_pic = false;
         $old_pic = $activity->pic;
@@ -251,6 +254,10 @@ class ActivityService
 
         if (empty($activity)) {
             throw new \Exception('活动不存在');
+        }
+
+        if ($activity->status != Activity::STATUS_APPLYING) {
+            throw new \Exception('当前状态活动不能删除');
         }
 
         \DB::transaction(function () use ($activity) {
