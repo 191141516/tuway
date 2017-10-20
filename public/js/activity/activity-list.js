@@ -76,7 +76,8 @@ var TableDatatablesAjax = function () {
                     placement: 'top',
                     html: true
                 });
-            }
+            },
+            language: dataTable_language,
         });
 
         dt.on('click', '.filter-submit', function () {

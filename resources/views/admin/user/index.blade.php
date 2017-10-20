@@ -90,7 +90,6 @@
 
 @section('js')
     <script type="text/javascript" src="{{asset('plugins/datatables/datatables.all.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('plugins/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/user/user-list.js')}}"></script>
     <script type="text/javascript">
         $(function () {

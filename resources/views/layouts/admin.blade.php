@@ -130,6 +130,7 @@
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="{{asset('js/app.min.js')}}" type="text/javascript"></script>
         <script src="{{asset('js/layout.min.js')}}" type="text/javascript"></script>
+        <script src="{{asset('js/base.js')}}" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
         @yield('js')
     </body>
