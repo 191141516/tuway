@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Events\UserClearCacheEvent;
 use App\Events\UserCreatedEvent;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -34,7 +35,8 @@ class User extends \App\User implements Transformable
     ];
 
     protected $dispatchesEvents = [
-        'saved' => UserCreatedEvent::class
+        'saved' => UserCreatedEvent::class,
+        'deleted' => UserClearCacheEvent::class,
     ];
 
     /** 正常 */

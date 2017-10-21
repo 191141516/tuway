@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Events\ActivityClearCacheEvent;
 use App\Events\PublishActivityEvent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -60,7 +61,9 @@ class Activity extends Model implements Transformable
     ];
 
     protected $dispatchesEvents = [
-        'created' => PublishActivityEvent::class
+        'created' => PublishActivityEvent::class,
+        'saved' => ActivityClearCacheEvent::class,
+        'deleted' => ActivityClearCacheEvent::class,
     ];
 
     /**

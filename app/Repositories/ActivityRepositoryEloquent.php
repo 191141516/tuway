@@ -12,9 +12,9 @@ use Prettus\Repository\Traits\CacheableRepository;
 /**
  * Class ActivityRepositoryEloquent.
  */
-class ActivityRepositoryEloquent extends BaseRepository implements ActivityRepository
+class ActivityRepositoryEloquent extends BaseRepository implements ActivityRepository, CacheableInterface
 {
-    use RepositoryExtensionTrait;
+    use RepositoryExtensionTrait, CacheableRepository;
 
     /**
      * Specify Model class name.

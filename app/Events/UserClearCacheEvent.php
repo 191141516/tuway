@@ -3,17 +3,20 @@
 namespace App\Events;
 
 use App\Entities\User;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class UserCreatedEvent
+class UserClearCacheEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
 
+    public $user;
     /**
      * Create a new event instance.
      *
@@ -31,6 +34,6 @@ class UserCreatedEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-create-user');
+        return new PrivateChannel('channel-clear-user');
     }
 }

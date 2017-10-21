@@ -12,8 +12,9 @@ use Prettus\Repository\Traits\CacheableRepository;
  * Class UserRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class UserRepositoryEloquent extends BaseRepository implements UserRepository
+class UserRepositoryEloquent extends BaseRepository implements UserRepository, CacheableInterface
 {
+    use CacheableRepository;
 
     /**
      * Specify Model class name

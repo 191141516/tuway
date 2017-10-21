@@ -2,6 +2,16 @@
 
 namespace App\Providers;
 
+use App\Events\ActivityClearCacheEvent;
+use App\Events\EntryCreatedEvent;
+use App\Events\PublishActivityEvent;
+use App\Events\UserClearCacheEvent;
+use App\Events\UserCreatedEvent;
+use App\Listeners\ClearActivityCache;
+use App\Listeners\ClearUserCache;
+use App\Listeners\StatisticsInit;
+use App\Listeners\StatisticsJoinIncr;
+use App\Listeners\StatisticsPublishIncr;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -13,15 +23,22 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\UserCreatedEvent' => [
-            'App\Listeners\StatisticsInit',
+        UserCreatedEvent::class => [
+            StatisticsInit::class,
+            ClearUserCache::class,
         ],
-        'App\Events\PublishActivityEvent' => [
-            'App\Listeners\StatisticsPublishIncr',
+        PublishActivityEvent::class => [
+            StatisticsPublishIncr::class,
         ],
-        'App\Events\EntryCreatedEvent' => [
-            'App\Listeners\StatisticsJoinIncr',
+        EntryCreatedEvent::class => [
+            StatisticsJoinIncr::class,
         ],
+        ActivityClearCacheEvent::class => [
+            ClearActivityCache::class,
+        ],
+        UserClearCacheEvent::class => [
+            ClearUserCache::class
+        ]
     ];
 
     /**

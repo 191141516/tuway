@@ -138,7 +138,7 @@ return [
        | 'except'  =>['find'],
        */
         'allowed'    => [
-            'only'   => null,
+            'only'   => ['all', 'paginate'],
             'except' => null
         ]
     ],
