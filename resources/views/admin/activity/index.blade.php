@@ -156,23 +156,22 @@
                         <div class="col-xs-12 col-md-12  col-xs-offset-1 col-md-offset-1" id="activity_detail">
 
                         </div>
+                        <div class="col-xs-12 col-md-12 col-xs-offset-1 col-md-offset-1">
+                            <ul id="images_list">
 
+                            </ul>
+                        </div>
                         <div class="col-xs-6 col-md-4 col-xs-offset-3 text-center">
                             <h4>活动报名人数</h4>
                             <span id="entry_num"></span>
                         </div>
 
-                        <div class="col-xs-12 col-md-12 col-xs-offset-1 col-md-offset-1" id="activity_detail">
+                        <div class="col-xs-12 col-md-12 col-xs-offset-1 col-md-offset-1">
                             <ul id="entry_list">
 
                             </ul>
                         </div>
 
-                        <div class="col-xs-12 col-md-12 col-xs-offset-1 col-md-offset-1" id="activity_detail">
-                            <ul id="images_list">
-
-                            </ul>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
