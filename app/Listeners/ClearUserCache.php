@@ -23,10 +23,10 @@ class ClearUserCache
     /**
      * Handle the event.
      *
-     * @param  UserClearCacheEvent  $event
+     * @param    $event
      * @return void
      */
-    public function handle(UserClearCacheEvent $event)
+    public function handle( $event)
     {
         event(new RepositoryEntityUpdated($this->userRepository, $event->user));
     }
