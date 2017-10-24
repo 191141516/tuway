@@ -228,7 +228,7 @@ var TableDatatablesAjax = function () {
                 len = activity_images.length;
 
                 for (var i = 0; i < len; i++) {
-                    images_html.push('<li><img src="'+activity_images[i]['img']+'" alt=""></li>');
+                    images_html.push('<li class="col-md-12 col-xs-12"><img src="'+activity_images[i]['img']+'" alt=""></li>');
                 }
 
                 $('#images_list').html(images_html.join(''));
