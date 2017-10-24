@@ -44,6 +44,7 @@
                                 <th width="20%"> 活动标题</th>
                                 <th width="15%"> 发布时间</th>
                                 <th>参加人数</th>
+                                <th>活动状态</th>
                                 <th> 状态</th>
                                 <th> 操作</th>
                             </tr>
@@ -80,6 +81,17 @@
                                     </div>
                                 </td>
                                 <td></td>
+                                <td>
+                                    <div class="form-group form-md-line-input">
+                                        <select class="bs-select form-control form-filter bs-select-hidden"
+                                                data-show-subtext="true" name="status">
+                                            <option value="" data-icon="fa-glass icon-success">全部</option>
+                                            <option value="1" data-icon="fa fa-paw"> 报名中</option>
+                                            <option value="2" data-icon="fa fa-navicon"> 活动中</option>
+                                            <option value="3" data-icon="fa fa-navicon"> 已结束</option>
+                                        </select>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="form-group form-md-line-input">
                                         <select class="bs-select form-control form-filter bs-select-hidden"
@@ -152,6 +164,12 @@
 
                         <div class="col-xs-12 col-md-12 col-xs-offset-1 col-md-offset-1" id="activity_detail">
                             <ul id="entry_list">
+
+                            </ul>
+                        </div>
+
+                        <div class="col-xs-12 col-md-12 col-xs-offset-1 col-md-offset-1" id="activity_detail">
+                            <ul id="images_list">
 
                             </ul>
                         </div>

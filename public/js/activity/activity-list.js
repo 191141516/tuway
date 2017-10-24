@@ -40,6 +40,30 @@ var TableDatatablesAjax = function () {
                     "name": "total"
                 },
                 {
+                    "data": "status",
+                    "name": "status",
+                    "orderable": false,
+                    render: function (data) {
+                        var html = '';
+                        switch (data) {
+                            case 1:
+                                html =  '<span class="label label-success"> 报名中 </span>';
+                            break;
+                            case 2:
+                                html =  '<span class="label label-success"> 活动中 </span>';
+                            break;
+                            case 3:
+                                html =  '<span class="label label-success"> 已结束 </span>';
+                            break;
+                            default:
+                                html = '<span class="label label-error"> 异常状态 </span>';
+                            break;
+                        }
+
+                        return html;
+                    }
+                },
+                {
                     "data": "state",
                     "name": "state",
                     "orderable": false,
@@ -65,7 +89,9 @@ var TableDatatablesAjax = function () {
                             html.push('<button type="button" class="btn btn-xs btn-success recover" data-id="'+row.id+'">恢复</button>');
                         }
 
-                        html.push('<button type="button" class="btn btn-xs btn-danger del" data-id="'+row.id+'">删除</button>');
+                        if (row.status == 1) {
+                            html.push('<button type="button" class="btn btn-xs btn-danger del" data-id="'+row.id+'">删除</button>');
+                        }
 
                         return html.join('');
                     }
@@ -156,9 +182,14 @@ var TableDatatablesAjax = function () {
                 btn: ['成全你','我错了'] //按钮
             }, function(){
 
-                ajax(url+activity_id, {}, 'DELETE', function(){
+                ajax(url+activity_id, {}, 'DELETE', function(data){
                     layer.close(index);
                     ajax_datatable.ajax.reload();
+                    if (data.code != 200) {
+                        layer.alert(data.message, {
+                            'icon': 4,
+                        });
+                    }
                 });
 
             }, function(){
@@ -191,6 +222,15 @@ var TableDatatablesAjax = function () {
                     html.push('<li class="pull-left"><img src="'+entry_list[i]+'" alt="" width="28"></li>');
                 }
 
+                var images_html = [];
+                var activity_images = activity.activity_image || [];
+                len = activity_images.length;
+
+                for (var i = 0; i < len; i++) {
+                    images_html.push('<li><img src="'+activity_images[i]['img']+'" alt=""></li>');
+                }
+
+                $('#images_list').html(images_html.join(''));
                 $('#entry_list').html(html.join(''));
                 $('#myModal').modal('show');
             });
