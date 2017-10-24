@@ -12,7 +12,8 @@ var TableDatatablesAjax = function () {
                 'url': '/admin/activity/ajax',
                 "data": function (d) {
                     d.title = $('.filter input[name="title"]').val();
-                    d.status = $('.filter select[name="state"] option:selected').val();
+                    d.state = $('.filter select[name="state"] option:selected').val();
+                    d.status = $('.filter select[name="status"] option:selected').val();
                     d.from = $('.filter input[name="from"]').val();
                     d.to = $('.filter input[name="to"]').val();
                 }
