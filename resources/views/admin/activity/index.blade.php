@@ -4,7 +4,7 @@
     <style type="text/css">
         #entry_list{overflow: auto; margin: 0; padding: 0}
         li {list-style-type:none;}
-        img{border-radius: 50%}
+        #pic, #entry_list img{border-radius: 50%}
     </style>
 @endsection
 
@@ -187,7 +187,7 @@
     <script type="text/javascript" src="{{asset('plugins/datatables/datatables.all.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/activity/activity-list.js')}}?v=1236"></script>
+    <script type="text/javascript" src="{{asset('js/activity/activity-list.js')}}?v=1237"></script>
     <script type="text/javascript">
         $(function(){
             TableDatatablesAjax.init();
