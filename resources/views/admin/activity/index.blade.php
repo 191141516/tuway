@@ -187,7 +187,7 @@
     <script type="text/javascript" src="{{asset('plugins/datatables/datatables.all.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/activity/activity-list.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/activity/activity-list.js')}}?v=1234"></script>
     <script type="text/javascript">
         $(function(){
             TableDatatablesAjax.init();
