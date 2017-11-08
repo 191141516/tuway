@@ -90,8 +90,14 @@ var TableDatatablesAjax = function () {
                             html.push('<button type="button" class="btn btn-xs btn-success recover" data-id="'+row.id+'">恢复</button>');
                         }
 
-                        if (row.status == 1) {
+                        // if (row.status == 1) {
                             html.push('<button type="button" class="btn btn-xs btn-danger del" data-id="'+row.id+'">删除</button>');
+                        // }
+
+                        if (row['top_time'] == '' || row['top_time'] == null) {
+                            html.push('<button type="button" class="btn btn-xs btn-primary to_top" data-id="'+row.id+'">置顶</button>');
+                        }else{
+                            html.push('<button type="button" class="btn btn-xs btn-primary cancel_top" data-id="'+row.id+'">取消置顶</button>');
                         }
 
                         return html.join('');
@@ -236,6 +242,35 @@ var TableDatatablesAjax = function () {
                 $('#myModal').modal('show');
             });
         });
+
+
+        dt.on('click', '.to_top', function(){
+
+            var activity_id = $(this).attr('data-id');
+
+            ajax(url+activity_id+'/top', {}, 'PUT', function(data){
+                ajax_datatable.ajax.reload();
+                if (data.code != 200) {
+                    layer.alert(data.message, {
+                        'icon': 4,
+                    });
+                }
+            });
+        });
+
+        dt.on('click', '.cancel_top', function(){
+            var activity_id = $(this).attr('data-id');
+
+            ajax(url+activity_id+'/cancel-top', {}, 'PUT', function(data){
+                ajax_datatable.ajax.reload();
+                if (data.code != 200) {
+                    layer.alert(data.message, {
+                        'icon': 4,
+                    });
+                }
+            });
+        });
+
     };
 
     function ajax(url, data, method) {

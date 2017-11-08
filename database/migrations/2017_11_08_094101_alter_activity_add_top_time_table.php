@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterActivitiesAddStateTable extends Migration
+class AlterActivityAddTopTimeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AlterActivitiesAddStateTable extends Migration
     public function up()
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->tinyInteger('state')->default(1)->comment('1-正常 0-拉黑')->after('status');
+            $table->dateTime('top_time')->nullable()->comment('置顶时间');
         });
     }
 
@@ -25,8 +25,8 @@ class AlterActivitiesAddStateTable extends Migration
      */
     public function down()
     {
-        Schema::table('activities', function (Blueprint $table){
-            $table->dropColumn(['state']);
+        Schema::table('activities', function (Blueprint $table) {
+            $table->dropColumn(['top_time']);
         });
     }
 }

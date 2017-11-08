@@ -33,6 +33,21 @@ class ActivityService
         $this->activityRepository = $activityRepository;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    private function getActivityById($id)
+    {
+        $activity = $this->activityRepository->find($id);
+
+        if (empty($activity)) {
+            throw new \Exception('活动不存在');
+        }
+        return $activity;
+    }
+
     public function create(Request $request)
     {
         $row = $request->all();
@@ -194,11 +209,7 @@ class ActivityService
     public function edit($id, Request $request)
     {
         $row = $request->all();
-        $activity = $this->activityRepository->find($id);
-
-        if (empty($activity)) {
-            throw new \Exception('活动不存在');
-        }
+        $activity = $this->getActivityById($id);
 
         if ($activity->status != Activity::STATUS_APPLYING) {
             throw new \Exception('当前状态活动不能修改');
@@ -250,11 +261,7 @@ class ActivityService
      */
     public function delete($id)
     {
-        $activity = $this->activityRepository->find($id);
-
-        if (empty($activity)) {
-            throw new \Exception('活动不存在');
-        }
+        $activity = $this->getActivityById($id);
 
         if ($activity->status != Activity::STATUS_APPLYING) {
             throw new \Exception('当前状态活动不能删除');
@@ -421,5 +428,44 @@ class ActivityService
         }
 
         return $paths;
+    }
+
+    /**
+     * 后台删除
+     * @param $id
+     * @throws \Exception
+     */
+    public function adminDelete($id)
+    {
+        $activity = $this->getActivityById($id);
+
+        \DB::transaction(function () use ($activity) {
+            $activity->entry()->delete();
+            $activity->delete();
+        });
+    }
+
+    /**
+     * 置顶
+     * @param $id
+     */
+    public function top($id)
+    {
+        $activity = $this->getActivityById($id);
+
+        $activity->top_time = now();
+        $activity->save();
+    }
+
+    /**
+     * 取消置顶
+     * @param $id
+     */
+    public function cancelTop($id)
+    {
+        $activity = $this->getActivityById($id);
+
+        $activity->top_time = null;
+        $activity->save();
     }
 }

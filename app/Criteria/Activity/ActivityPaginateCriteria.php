@@ -57,6 +57,7 @@ class ActivityPaginateCriteria implements CriteriaInterface
 
         $model->where('state', '=', Activity::STATE_NORMAL);
         $model->select('activities.*');
+        $model->orderBy('activities.top_time', 'desc');
         $model->orderBy('activities.status');
         $model->orderBy('activities.start_date');
 

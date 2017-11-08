@@ -51,7 +51,7 @@ class ActivityController extends Controller
      */
     public function destroy($id)
     {
-        $this->activityService->delete($id);
+        $this->activityService->adminDelete($id);
         return $this->return;
     }
 
@@ -68,6 +68,27 @@ class ActivityController extends Controller
             $this->return['message'] = $e->getMessage();
         }
 
+        return $this->return;
+    }
+
+    /**
+     * 活动置顶
+     * @param $id
+     */
+    public function top($id)
+    {
+        $this->activityService->top($id);
+        return $this->return;
+    }
+
+    /**
+     * 取消置顶
+     * @param $id
+     * @return array
+     */
+    public function cancelTop($id)
+    {
+        $this->activityService->cancelTop($id);
         return $this->return;
     }
 }

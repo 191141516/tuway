@@ -73,9 +73,11 @@ class ActivityDataTableCriteria implements CriteriaInterface
         if($orders){
             $orderName = $columns[$orders['0']['column']]['name'];
             $orderDir = $orders['0']['dir'];
-            $model = $model->orderBy($orderName, $orderDir);
+            $model->orderBy($orderName, $orderDir);
         }else{
-            $model = $model->orderBy('updated_at', 'desc');
+            $model->orderBy('activities.top_time', 'desc');
+            $model->orderBy('activities.status');
+            $model->orderBy('activities.start_date');
         }
 
         $page = $start ? floor($start / $length) + 1 : 1;

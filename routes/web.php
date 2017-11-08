@@ -49,6 +49,10 @@ Route::group(['middleware' => ['web'],'namespace' => 'Admin', 'as' => 'admin.', 
             Route::delete('/{id}', 'ActivityController@destroy')->name('delete');
 
             Route::get('/{id}', 'ActivityController@info')->name('detail');
+
+            Route::put('/{id}/top', 'ActivityController@top')->name('top');
+
+            Route::put('/{id}/cancel-top', 'ActivityController@cancelTop')->name('cancel-top');
         });
     });
 });

@@ -48,6 +48,7 @@ class Activity extends Model implements Transformable
         'end_date',
         'status',
         'state',
+        'top_time',
     ];
 
     protected $week = [
