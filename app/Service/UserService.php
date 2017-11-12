@@ -88,8 +88,14 @@ class UserService
         $user->save();
     }
 
-    public function datatable(Request $request)
+    public function datatable(Request $request, $isOperate = false)
     {
+        $is_operate = $isOperate ? \App\Entities\User::OPERATE_USER: \App\Entities\User::COMMON_USER;
+
+        $this->userRepository->scopeQuery(function ($query) use($is_operate){
+            return $query->where('is_operate', $is_operate);
+        });
+
         $this->userRepository->pushCriteria(app(UserDataTableCriteria::class));
         $data = $this->userRepository->with(['statistics'])->paginate($request->get('length'));
 
@@ -113,5 +119,47 @@ class UserService
         $user->status = $status;
 
         $user->save();
+    }
+
+    public function createOperateAccount(Request $request)
+    {
+        /** @var ImageService $imageService */
+        $imageService = app(ImageService::class);
+        $paths = $imageService->transformImg($request->get('avatar_url'));
+
+        $row = $request->all();
+        $row['avatar_url'] = reset($paths);
+        $row['is_operate'] = \App\Entities\User::OPERATE_USER;
+        $row['open_id'] = '';
+        $row['session_key'] = '';
+        $row['expires_in'] = now();
+
+        $imageService->moveImg();
+        return $this->userRepository->create($row);
+    }
+
+    public function detail($id)
+    {
+        return $this->userRepository->find($id);
+    }
+
+    public function update($id, Request $request)
+    {
+        $user = $this->userRepository->find($id);
+
+        if (empty($user)) {
+            throw new \Exception('用户不存在');
+        }
+
+        /** @var ImageService $imageService */
+        $imageService = app(ImageService::class);
+        $paths = $imageService->updateImages($request->get('avatar_url'));
+
+        $user->avatar_url = reset($paths);
+        $user->name = $request->get('name');
+
+        $user->save();
+        $imageService->moveImg();
+        $imageService->delImg();
     }
 }

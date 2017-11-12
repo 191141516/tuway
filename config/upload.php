@@ -21,5 +21,20 @@ return [
                 'height' => 128
             ]
         ]
+    ],
+    'avatar' => [
+        'mime' => [
+            'image/png',
+            'image/jpeg',
+            'image/jpg',
+            'image/pjpeg',
+        ],
+        'size' => 512 * 1024,
+        'thumb' => [
+            [
+                'width' => 64,
+                'height' => 64
+            ]
+        ]
     ]
 ];

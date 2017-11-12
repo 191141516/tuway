@@ -36,8 +36,11 @@ class ApiHandler
         NotFoundHttpException::class => ['接口不存在', 404],
         ModelNotFoundException::class => ['系统异常', 500],
         ValidationException::class => ['数据验证错误', 601],
-        Exception::class => ['操作失败', 602],
         MethodNotAllowedHttpException::class => ['接口不存在', 404],
+
+
+
+        Exception::class => ['操作失败', 602],                      //要放在最后
     ];
 
     public function __construct(Request $request, \Exception $exception)
@@ -84,7 +87,9 @@ class ApiHandler
             $errors = $this->exception->errors();
         }
 
-        return $this->failed($this->exception->getMessage(), $message[1], [], $errors);
+        $exception_message = $this->exception->getMessage();
+        $exception_message = empty($exception_message)  ? $message[0] : $exception_message;
+        return $this->failed($exception_message, $message[1], [], $errors);
 
     }
 }

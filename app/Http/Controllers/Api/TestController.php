@@ -3,18 +3,39 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entities\Option;
+use App\Repositories\ActivityRepositoryEloquent;
 use App\Service\ActivityService;
 use App\Service\EntryService;
 use App\Service\UploadService;
+use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Prettus\Repository\Helpers\CacheKeys;
 
 class TestController extends ApiController
 {
     public function index(Request $request)
     {
-        $activityService = app(ActivityService::class);
-        return $activityService->delete(2);
+//        $cache = app(config('repository.cache.repository', 'cache'));
+//
+//
+//        $keys = CacheKeys::getKeys(ActivityRepositoryEloquent::class);
+//
+//        foreach ($keys as $key) {
+//            $cache->forget($key);
+//        }
+//
+//        dd(CacheKeys::getKeys(ActivityRepositoryEloquent::class));
+//
+//
+//
+//        $url = 'http://tuway.quoyle.info/upload/img/07/52/0752c845188d991445e4f57981fb9559.png';
+//
+//        $url_info = parse_url($url);
+//
+//        $path_info = pathinfo($url_info['path']);
+//
+//        dd($path_info);
 
 //        $entryService = app(EntryService::class);
 //        $data = $entryService->entryList($request);

@@ -1,13 +1,5 @@
 @extends('layouts.admin')
 
-@section('css')
-    <style type="text/css">
-        #entry_list{overflow: auto; margin: 0; padding: 0}
-        li {list-style-type:none;}
-        #pic, #entry_list img{border-radius: 50%}
-    </style>
-@endsection
-
 @section('content')
     <div class="page-bar">
         <ul class="page-breadcrumb">
@@ -16,7 +8,7 @@
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                <span>活动管理</span>
+                <span>运营用户管理</span>
             </li>
         </ul>
     </div>
@@ -27,11 +19,11 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject font-dark sbold uppercase">活动列表</span>
+                        <span class="caption-subject font-dark sbold uppercase">运营用户列表</span>
                     </div>
                     <div class="actions">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-success activity-create">创建官方活动</button>
+                            <button type="button" class="btn btn-success" id="create_operate_account">创建运营用户</button>
                         </div>
                     </div>
                 </div>
@@ -42,14 +34,14 @@
                             <thead>
                             <tr role="row" class="heading">
                                 <th>#</th>
-                                <th width="20%"> 活动标题</th>
-                                <th width="15%"> 发布时间</th>
-                                <th>参加人数</th>
-                                <th>活动状态</th>
+                                <th width="10%"> 头像</th>
+                                <th width="15%"> 用户名</th>
+                                <th>发布活动次数</th>
                                 <th> 状态</th>
                                 <th> 操作</th>
                             </tr>
                             <tr role="row" class="filter">
+                                <td></td>
                                 <td></td>
                                 <td>
                                     <div class="form-group form-md-line-input">
@@ -57,28 +49,10 @@
                                     <span class="input-group-addon">
                                         <i class="fa fa-user"></i>
                                     </span>
-                                            <input type="text" class="form-control form-filter" name="title"
-                                                   placeholder="标题">
+                                            <input type="text" class="form-control form-filter" name="name"
+                                                   placeholder="name">
                                             <div class="form-control-focus"></div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group date date-picker margin-bottom-5"
-                                         data-date-format="yyyy-mm-dd">
-                                        <input type="text" class="form-control form-filter input-sm" readonly
-                                               placeholder="From" name="from">
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </span>
-                                    </div>
-
-                                    <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
-                                        <input type="text" class="form-control form-filter input-sm" readonly
-                                               placeholder="To" name="to">
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </span>
                                     </div>
                                 </td>
                                 <td></td>
@@ -86,17 +60,6 @@
                                     <div class="form-group form-md-line-input">
                                         <select class="bs-select form-control form-filter bs-select-hidden"
                                                 data-show-subtext="true" name="status">
-                                            <option value="" data-icon="fa-glass icon-success">全部</option>
-                                            <option value="1" data-icon="fa fa-paw"> 报名中</option>
-                                            <option value="2" data-icon="fa fa-navicon"> 活动中</option>
-                                            <option value="3" data-icon="fa fa-navicon"> 已结束</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group form-md-line-input">
-                                        <select class="bs-select form-control form-filter bs-select-hidden"
-                                                data-show-subtext="true" name="state">
                                             <option value="" data-icon="fa-glass icon-success">全部</option>
                                             <option value="1" data-icon="fa fa-paw"> 正常</option>
                                             <option value="0" data-icon="fa fa-navicon"> 拉黑</option>
@@ -122,18 +85,16 @@
             </div>
         </div>
     </div>
-    @include('admin.activity.detail')
-    @include('admin.activity.create')
 @endsection
+
+@include('admin.operateAccount.create')
 
 @section('js')
     <script type="text/javascript" src="{{asset('plugins/datatables/datatables.all.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/activity/activity-list.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/operateAccount/list.js')}}"></script>
     <script type="text/javascript">
-        $(function(){
-            TableDatatablesAjax.init();
+        $(function () {
+            var table = TableDatatablesAjax.init();
         });
     </script>
 @endsection

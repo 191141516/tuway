@@ -13,7 +13,7 @@ class UserUpdateStatusRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return \Auth::guard('admin')->check();
     }
 
     /**

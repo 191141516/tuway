@@ -63,6 +63,18 @@ class ComposerServiceProvider extends ServiceProvider
                     'sort' => 0,
                     'status' => 1,
                     'child' => [],
+                ],
+                [
+                    'id' => 5,
+                    'pid' => 0,
+                    'name' => '运营用户管理',
+                    'language' => 'zh',
+                    'icon' => 'fa fa-dashboard',
+                    'url' => 'admin/operate-account',
+                    'description' => '运营用户管理',
+                    'sort' => 0,
+                    'status' => 1,
+                    'child' => [],
                 ]
             ];
             $view->with('menus',$menus);

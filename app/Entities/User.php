@@ -25,6 +25,7 @@ class User extends \App\User implements Transformable
         'avatar_url',
         'union_id',
         'status',
+        'is_operate',
     ];
 
     protected $hidden = [
@@ -43,6 +44,10 @@ class User extends \App\User implements Transformable
     const STATUS_NORMAL = 1;
     /** 拉黑 */
     const STATUS_BLACK = 0;
+    /** 运营用户 */
+    const OPERATE_USER = 1;
+    /** 普通用户 */
+    const COMMON_USER = 0;
 
     /**
      * 发布的活动
@@ -68,5 +73,14 @@ class User extends \App\User implements Transformable
     public function statistics()
     {
         return $this->hasOne(Statistics::class);
+    }
+
+    public function getAvatarUrlAttribute($value)
+    {
+        if ($this->is_operate == self::OPERATE_USER) {
+            return asset(env('UPLOAD_IMG_PATH') . $value);
+        } else {
+            return $value;
+        }
     }
 }

@@ -22,15 +22,13 @@ class ActivityService
     /** @var ActivityRepository */
     protected $activityRepository;
 
-    /** @var array 图片移动路径 */
-    private $move_img_path = [];
+    /** @var ImageService  */
+    protected $imageService;
 
-    /** @var array 删除活动图片路径 */
-    private $del_img_path = [];
-
-    public function __construct(ActivityRepository $activityRepository)
+    public function __construct(ActivityRepository $activityRepository, ImageService $imageService)
     {
         $this->activityRepository = $activityRepository;
+        $this->imageService = $imageService;
     }
 
     /**
@@ -51,7 +49,7 @@ class ActivityService
     public function create(Request $request)
     {
         $row = $request->all();
-        $images = $this->transformImg($request->get('images', array()));
+        $images = $this->imageService->transformImg($request->get('images'));
 
         $row['pic'] = reset($images);
         $row['user_id'] = $request->user('api')->id;
@@ -66,7 +64,7 @@ class ActivityService
             $activityImageService->insertActivityImages($activity_id, $images);
 
             //移动图片
-            $this->moveImg();
+            $this->imageService->moveImg();
             //生成缩略图
             //
         });
@@ -142,34 +140,6 @@ class ActivityService
     }
 
     /**
-     * @param $pic
-     */
-    private function getImgPath($pic, $to_del = false)
-    {
-        $url_info = parse_url($pic);
-
-        if (!\File::exists(public_path($url_info['path']))) {
-            throw new \Exception('图片不存在');
-        }
-
-        $path_info = pathinfo($url_info['path']);
-
-        $dir = Common::getFileDir($path_info['basename']);
-
-        if ($to_del) {
-            $this->del_img_path[] = public_path(env('UPLOAD_IMG_PATH').$dir.$path_info['basename']);
-        }else{
-            $this->move_img_path[] = [
-                'from' => public_path($url_info['path']),
-                'to' => public_path(env('UPLOAD_IMG_PATH').$dir.$path_info['basename'])
-            ];
-        }
-
-
-        return $dir.$path_info['basename'];
-    }
-
-    /**
      * @param $id
      * @param $request
      */
@@ -216,7 +186,7 @@ class ActivityService
         }
 
         $images_arr = $request->get('images', array());
-        $images = $this->updateImages($images_arr);
+        $images = $this->imageService->updateImages($images_arr);
 
         $update_pic = false;
         $old_pic = $activity->pic;
@@ -236,11 +206,11 @@ class ActivityService
             $activity->update($row);
 
             if ($update_pic) {
-                $this->getImgPath($old_pic, true);
+                $this->imageService->getImgPath($old_pic, true);
             }
 
-            $this->moveImg();
-            $this->delImg();
+            $this->imageService->moveImg();
+            $this->imageService->delImg();
         });
     }
 
@@ -268,8 +238,10 @@ class ActivityService
         }
 
         \DB::transaction(function () use ($activity) {
+            $images = $activity->activityImage;
             $activity->entry()->delete();
             $activity->delete();
+            $this->removeImage($images);
         });
     }
 
@@ -361,75 +333,6 @@ class ActivityService
         return $activity;
     }
 
-
-    /**
-     * 活动图片
-     * @param $images
-     * @return array
-     */
-    private function transformImg($images)
-    {
-        $paths = [];
-
-        if (!empty($images)) {
-            foreach ($images as $image) {
-                $paths[] = $this->getImgPath($image);
-            }
-        }
-
-        return $paths;
-    }
-
-    /**
-     * 移动图片
-     */
-    private function moveImg()
-    {
-        foreach ($this->move_img_path as $item) {
-            Common::move($item['from'], $item['to']);
-        }
-    }
-
-    private function delImg()
-    {
-        foreach ($this->del_img_path as $path) {
-            Common::delFile($path);
-        }
-    }
-
-    private function updateImages($images)
-    {
-        $paths = [];
-        if ($images) {
-            foreach ($images as $image) {
-
-                $url_info = parse_url($image);
-
-                if (!\File::exists(public_path($url_info['path']))) {
-                    throw new \Exception('图片不存在');
-                }
-
-                $path_info = pathinfo($url_info['path']);
-
-                $dir = Common::getFileDir($path_info['basename']);
-
-                $dirs = explode('/', $path_info['dirname']);
-                //判断是tmp还是img
-                if ($dirs['2'] == 'tmp') {
-                    $this->move_img_path[] = [
-                        'from' => public_path($url_info['path']),
-                        'to' => public_path(env('UPLOAD_IMG_PATH').$dir.$path_info['basename'])
-                    ];
-
-                }
-
-                $paths[] = $dir.$path_info['basename'];
-            }
-        }
-
-        return $paths;
-    }
-
     /**
      * 后台删除
      * @param $id
@@ -440,8 +343,10 @@ class ActivityService
         $activity = $this->getActivityById($id);
 
         \DB::transaction(function () use ($activity) {
+            $images = $activity->activityImage;
             $activity->entry()->delete();
             $activity->delete();
+            $this->removeImage($images);
         });
     }
 
@@ -467,5 +372,18 @@ class ActivityService
 
         $activity->top_time = null;
         $activity->save();
+    }
+
+    /**
+     * @param $images
+     * @param $this
+     */
+    function removeImage($images)
+    {
+        foreach ($images as $image) {
+            $this->imageService->getImgPath($image, true);
+        }
+
+        $this->imageService->delImg();
     }
 }
