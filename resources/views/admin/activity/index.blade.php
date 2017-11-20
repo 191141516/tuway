@@ -6,6 +6,8 @@
         li {list-style-type:none;}
         #pic, #entry_list img{border-radius: 50%}
     </style>
+
+    <link href="{{asset('plugins/ueditor/themes/default/css/umeditor.css')}}" type="text/css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -130,7 +132,11 @@
     <script type="text/javascript" src="{{asset('plugins/datatables/datatables.all.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/activity/activity-list.js')}}"></script>
+    <script type="text/javascript" src="{{asset('plugins/ueditor/template.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('plugins/ueditor/umeditor.config.js')}}"></script>
+    <script type="text/javascript" src="{{asset('plugins/ueditor/umeditor.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('plugins/ueditor/lang/zh-cn/zh-cn.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/activity/activity-list.js')}}?v=1"></script>
     <script type="text/javascript">
         $(function(){
             TableDatatablesAjax.init();

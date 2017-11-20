@@ -53,6 +53,7 @@ class ActivityService
 
         $row['pic'] = reset($images);
         $row['user_id'] = $request->user('api')->id;
+        $this->imageService->addThumbPath(public_path(env('UPLOAD_IMG_PATH').$row['pic']));
 
         $activity_id = 0;
 
@@ -66,7 +67,7 @@ class ActivityService
             //移动图片
             $this->imageService->moveImg();
             //生成缩略图
-            //
+            $this->imageService->generateThumb();
         });
 
         return $activity_id;

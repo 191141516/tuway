@@ -9,6 +9,8 @@
 namespace Library\Tools;
 
 
+use Image;
+
 class Common
 {
     public static function jsonDecode($json, $toArray = true)
@@ -70,6 +72,29 @@ class Common
      */
     public static function delFile($path)
     {
-        \File::delete($path);
+        if (file_exists($path)) {
+            \File::delete($path);
+        }
+    }
+
+    /**
+     * 生成缩略图
+     * @param $path
+     * @param $width
+     * @param $height
+     */
+    public static function generateThumb($path, $width, $height)
+    {
+        $thumb_name = self::thumbPath($path, $width, $height);
+
+        $img = Image::make($path);
+        $img->resize($width, $height);
+        $img->save($thumb_name);
+    }
+
+    public static function thumbPath($path, $width, $height)
+    {
+        $path_info = pathinfo($path);
+        return $path_info['dirname'].'/'.$path_info['filename'].'_'.$width.'x'.$height.'.'.$path_info['extension'];
     }
 }

@@ -19,6 +19,9 @@ class ImageService
     /** @var array 删除图片路径 */
     private $del_img_path = [];
 
+    /** @var array 需要生成缩略图的图片路径 */
+    private $thumb_img_path = [];
+
     /**
      * 图片处理
      * @param $images
@@ -136,5 +139,31 @@ class ImageService
 
         }
         return $path;
+    }
+
+    public function addThumbPath($path)
+    {
+        if (!in_array($path, $this->thumb_img_path)) {
+            $this->thumb_img_path[] = $path;
+        }
+    }
+
+    /**
+     * 生成缩略图
+     */
+    public function generateThumb()
+    {
+        $thumb_config = config('upload.img.thumb');
+
+        foreach ($thumb_config as $item) {
+            $width = (int) $item['width'];
+            $height = (int) $item['height'];
+
+            if ($width > 0 && $height > 0) {
+                foreach ($this->thumb_img_path as $path) {
+                    Common::generateThumb($path, $width, $height);
+                }
+            }
+        }
     }
 }

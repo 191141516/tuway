@@ -11,12 +11,18 @@
                         <label for="publish-account" class="control-label">发布帐号:</label>
                         <select name="publish_account_id" class="form-control" id="publish-account">
                             <option value="">请选择</option>
+                            @foreach ($accounts as $account)
+                                <option value="{{$account->id}}">{{$account->name}}</option>
+                            @endforeach
                         </select>
-                        <a href="/operate"></a>
                     </div>
                     <div class="form-group">
-                        <label for="message-text" class="control-label">Message:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
+                        <label for="message-text" class="control-label">详情:</label>
+
+                        <script type="text/plain" id="myEditor">
+                            <p>活动详情</p>
+                        </script>
+
                     </div>
                 </form>
             </div>

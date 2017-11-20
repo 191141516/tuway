@@ -271,6 +271,11 @@ var TableDatatablesAjax = function () {
             });
         });
 
+        $('.activity-create').on('click', function () {
+            $('#createModel').modal('show');
+        });
+
+        var um = UM.getEditor('myEditor');
     };
 
     function ajax(url, data, method) {

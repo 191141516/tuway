@@ -162,4 +162,11 @@ class UserService
         $imageService->moveImg();
         $imageService->delImg();
     }
+
+    public function getAllOperateAccount()
+    {
+        return $this->userRepository->findWhere([
+            ['is_operate', '=', \App\Entities\User::OPERATE_USER]
+        ]);
+    }
 }

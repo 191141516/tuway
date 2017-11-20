@@ -6,6 +6,7 @@ use App\Events\ActivityClearCacheEvent;
 use App\Events\PublishActivityEvent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Library\Tools\Common;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -166,6 +167,19 @@ class Activity extends Model implements Transformable
 
     public function getPicAttribute($value)
     {
-        return asset(env('UPLOAD_IMG_PATH') . $value);
+        $thumb_config = config('upload.img.thumb');
+
+        $width = isset($thumb_config['0']['width']) ? $thumb_config['0']['width'] : 128;
+        $height = isset($thumb_config['0']['height']) ? $thumb_config['0']['height'] : 128;
+
+        $thumb_name = Common::thumbPath($value, $width, $height);
+
+        if (file_exists(public_path(env('UPLOAD_IMG_PATH') . $thumb_name))) {
+            $pic = asset(env('UPLOAD_IMG_PATH') . $thumb_name);
+        } else {
+            $pic = asset(env('UPLOAD_IMG_PATH') . $value);
+        }
+
+        return $pic;
     }
 }
