@@ -37,7 +37,6 @@ class User extends \App\User implements Transformable
 
     protected $dispatchesEvents = [
         'saved' => UserCreatedEvent::class,
-        'deleted' => UserClearCacheEvent::class,
     ];
 
     /** 正常 */

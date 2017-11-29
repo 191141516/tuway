@@ -25,23 +25,23 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         UserCreatedEvent::class => [
             StatisticsInit::class,
-            ClearUserCache::class,
+//            ClearUserCache::class,
         ],
         PublishActivityEvent::class => [
             StatisticsPublishIncr::class,
-            ClearUserCache::class,
+//            ClearUserCache::class,
         ],
         EntryCreatedEvent::class => [
             StatisticsJoinIncr::class,
-            ClearUserCache::class,
+//            ClearUserCache::class,
         ],
-        ActivityClearCacheEvent::class => [
-            ClearActivityCache::class,
-            ClearUserCache::class,
-        ],
-        UserClearCacheEvent::class => [
-            ClearUserCache::class
-        ]
+//        ActivityClearCacheEvent::class => [
+//            ClearActivityCache::class,
+//            ClearUserCache::class,
+//        ],
+//        UserClearCacheEvent::class => [
+//            ClearUserCache::class
+//        ]
     ];
 
     /**

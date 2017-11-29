@@ -64,8 +64,8 @@ class Activity extends Model implements Transformable
 
     protected $dispatchesEvents = [
         'created' => PublishActivityEvent::class,
-        'saved' => ActivityClearCacheEvent::class,
-        'deleted' => ActivityClearCacheEvent::class,
+//        'saved' => ActivityClearCacheEvent::class,
+//        'deleted' => ActivityClearCacheEvent::class,
     ];
 
     /**
