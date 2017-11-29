@@ -382,7 +382,8 @@ class ActivityService
     function removeImage($images)
     {
         foreach ($images as $image) {
-            $this->imageService->getImgPath($image, true);
+
+            $this->imageService->getImgPath($image->img, true);
         }
 
         $this->imageService->delImg();
