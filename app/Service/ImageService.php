@@ -22,6 +22,13 @@ class ImageService
     /** @var array 需要生成缩略图的图片路径 */
     private $thumb_img_path = [];
 
+    public static $mime_type_suffix_map = [
+        'image/png' => '.png',
+        'image/jpeg' => '.jpg',
+        'image/jpg' => '.jpg',
+        'image/pjpeg' => '.jpg',
+    ];
+
     /**
      * 图片处理
      * @param $images
@@ -88,7 +95,8 @@ class ImageService
     {
         $url_info = parse_url($pic);
 
-        if (!\File::exists(public_path($url_info['path']))) {
+        $public_path = public_path($url_info['path']);
+        if (!\File::exists($public_path)) {
             throw new \Exception('图片不存在');
         }
 
@@ -96,7 +104,10 @@ class ImageService
 
         $dir = Common::getFileDir($path_info['basename']);
 
-        $path = $dir.$path_info['basename'];
+        $mime_type = \File::mimeType($public_path);
+
+        $path = $dir.$path_info['filename'].self::$mime_type_suffix_map[$mime_type];
+
         if ($to_del) {
             $this->del_img_path[] = public_path(env('UPLOAD_IMG_PATH').$path);
         }else{
