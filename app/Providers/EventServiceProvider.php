@@ -29,12 +29,15 @@ class EventServiceProvider extends ServiceProvider
         ],
         PublishActivityEvent::class => [
             StatisticsPublishIncr::class,
+            ClearUserCache::class,
         ],
         EntryCreatedEvent::class => [
             StatisticsJoinIncr::class,
+            ClearUserCache::class,
         ],
         ActivityClearCacheEvent::class => [
             ClearActivityCache::class,
+            ClearUserCache::class,
         ],
         UserClearCacheEvent::class => [
             ClearUserCache::class
