@@ -51,7 +51,8 @@ class AuthenticateController extends ApiController
         $result = WeiXinService::getSessionKey($request->get('code'));
         $result['open_id'] = $result['openid'];
         $result['union_id'] = isset($result['unionid'])? $result['unionid']: '';
-        $result['expires_in'] = Carbon::now()->addSecond($result['expires_in']);
+//        $result['expires_in'] = Carbon::now()->addSecond($result['expires_in']); //版本升级没有expires_in
+        $result['expires_in'] = Carbon::now();
 
         $userService = app(UserService::class);
 
