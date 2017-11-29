@@ -17,8 +17,8 @@ return [
         'size' => 2 * 1024 * 1024,
         'thumb' => [
             [
-                'width' => 128,
-                'height' => 128
+                'width' => 256,
+                'height' => 256
             ]
         ]
     ],
