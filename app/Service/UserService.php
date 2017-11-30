@@ -130,7 +130,7 @@ class UserService
         $row = $request->all();
         $row['avatar_url'] = reset($paths);
         $row['is_operate'] = \App\Entities\User::OPERATE_USER;
-        $row['open_id'] = '';
+        $row['open_id'] = $this->getToWayUniqId();
         $row['session_key'] = '';
         $row['expires_in'] = now();
 
@@ -168,5 +168,10 @@ class UserService
         return $this->userRepository->findWhere([
             ['is_operate', '=', \App\Entities\User::OPERATE_USER]
         ]);
+    }
+
+    private function getToWayUniqId()
+    {
+        return 'toway_'.uniqid();
     }
 }
