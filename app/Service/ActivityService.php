@@ -116,7 +116,7 @@ class ActivityService
 
         if ($collection->count()) {
             $ids = $collection->pluck('id')->toArray();
-            $this->updateStatusByIds($ids, Activity::STATUS_STARTING);
+            $this->updateByIds($ids, ['status' => Activity::STATUS_STARTING]);
         }
     }
 
@@ -134,7 +134,7 @@ class ActivityService
 
         if ($collection->count()) {
             $ids = $collection->pluck('id')->toArray();
-            $this->updateStatusByIds($ids, Activity::STATUS_END);
+            $this->updateByIds($ids, ['status' => Activity::STATUS_END, 'top_time' => 0]);
         }
     }
 
@@ -357,7 +357,7 @@ class ActivityService
     {
         $activity = $this->getActivityById($id);
 
-        $activity->top_time = now();
+        $activity->top_time = time();
         $activity->save();
     }
 
@@ -369,7 +369,7 @@ class ActivityService
     {
         $activity = $this->getActivityById($id);
 
-        $activity->top_time = null;
+        $activity->top_time = 0;
         $activity->save();
     }
 
@@ -387,8 +387,8 @@ class ActivityService
         $this->imageService->delImg();
     }
 
-    public function updateStatusByIds(array $ids, $status)
+    public function updateByIds(array $ids, array $update)
     {
-        Activity::whereIn('id', $ids)->update(['status' => $status]);
+        Activity::whereIn('id', $ids)->update($update);
     }
 }

@@ -38,8 +38,6 @@ class ApiHandler
         ValidationException::class => ['数据验证错误', 601],
         MethodNotAllowedHttpException::class => ['接口不存在', 404],
 
-
-
         Exception::class => ['操作失败', 602],                      //要放在最后
     ];
 

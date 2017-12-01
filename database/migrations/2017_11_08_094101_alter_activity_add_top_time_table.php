@@ -14,7 +14,7 @@ class AlterActivityAddTopTimeTable extends Migration
     public function up()
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->dateTime('top_time')->nullable()->comment('置顶时间');
+            $table->unsignedInteger('top_time')->default(0)->comment('置顶时间');
         });
     }
 
