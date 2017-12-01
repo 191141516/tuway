@@ -157,7 +157,7 @@ class ActivityService
 
         $activity->append(['detail_activity_date_text']);
 
-        $activity->setRelation('entryUser', $entryUser->pluck('avatar_url'));
+//        $activity->setRelation('entryUser', $entryUser);
 
         $activity->setRelation('activity_image', $activityImage->pluck('img'));
 
@@ -310,7 +310,7 @@ class ActivityService
                 $query->select(['id', 'name', 'avatar_url']);
             },
             'entryUser' => function ($query) {
-                $query->select(['users.avatar_url', 'users.id'])->orderBy('entries.created_at');
+                $query->select(['users.avatar_url', 'users.id', 'users.name'])->orderBy('entries.created_at');
             },
             'activityImage' => function($query) {
                 $query->select(['activity_id', 'img']);
