@@ -2,15 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entities\Option;
-use App\Repositories\ActivityRepositoryEloquent;
-use App\Service\ActivityService;
-use App\Service\EntryService;
-use App\Service\UploadService;
-use Cache;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Prettus\Repository\Helpers\CacheKeys;
 
 class TestController extends ApiController
 {

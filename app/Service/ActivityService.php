@@ -112,12 +112,11 @@ class ActivityService
             ['start_date', '<=', Carbon::now()->format('Y-m-d H:i')],
         ];
 
-        $collection = $this->activityRepository->findWhere($where);
+        $collection = $this->activityRepository->findWhere($where, ['id']);
 
-        if ($collection->count() > 0) {
-            $collection->each(function ($activity) {
-                $activity->update(['status' => Activity::STATUS_STARTING]);
-            });
+        if ($collection->count()) {
+            $ids = $collection->pluck('id')->toArray();
+            $this->updateStatusByIds($ids, Activity::STATUS_STARTING);
         }
     }
 
@@ -131,12 +130,11 @@ class ActivityService
             ['end_date', '<=', Carbon::now()->format('Y-m-d H:i')],
         ];
 
-        $collection = $this->activityRepository->findWhere($where);
+        $collection = $this->activityRepository->findWhere($where, ['id']);
 
         if ($collection->count()) {
-            $collection->each(function ($activity) {
-                $activity->update(['status' => Activity::STATUS_END]);
-            });
+            $ids = $collection->pluck('id')->toArray();
+            $this->updateStatusByIds($ids, Activity::STATUS_END);
         }
     }
 
@@ -379,7 +377,7 @@ class ActivityService
      * @param $images
      * @param $this
      */
-    function removeImage($images)
+    public function removeImage($images)
     {
         foreach ($images as $image) {
 
@@ -387,5 +385,10 @@ class ActivityService
         }
 
         $this->imageService->delImg();
+    }
+
+    public function updateStatusByIds(array $ids, $status)
+    {
+        Activity::whereIn('id', $ids)->update(['status' => $status]);
     }
 }

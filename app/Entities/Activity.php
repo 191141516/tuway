@@ -145,7 +145,7 @@ class Activity extends Model implements Transformable
         $time_format = 'H:i';
 
         if ($start_date->format($format) === $end_date->format($format)) {
-            $week_str = $start_date->format($show_format) . ' ' . $this->week[$start_date->dayOfWeek];
+            $week_str = $start_date->format($show_format) . ' ' . $this->week[$start_date->dayOfWeek] . ' ' . $start_date->format($time_format) . '-' . $end_date->format($time_format);
         } else {
             $week_str = $start_date->format($show_format) . '(' . $this->week[$start_date->dayOfWeek] . ')' . $start_date->format($time_format)
                 . '-' . $end_date->format($show_format) . '(' . $this->week[$end_date->dayOfWeek] . ')' . $end_date->format($time_format);
