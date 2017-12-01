@@ -18,8 +18,8 @@ class CreateOptionsTable extends Migration
             $table->string('name', 32)->comment('选项名');
             $table->string('key', 32)->comment('接收的键');
             $table->string('type', 20)->comment('表单类型');
-            $table->string('rule', 128)->comment('验证规则');
-            $table->string('option_value', 256)->nullable()->comment('可选值');
+            $table->string('rule', 255)->comment('验证规则');
+            $table->string('option_value', 255)->nullable()->comment('可选值');
             $table->string('messages', 512)->nullable()->comment('验证提示信息');
             $table->timestamps();
 		});
