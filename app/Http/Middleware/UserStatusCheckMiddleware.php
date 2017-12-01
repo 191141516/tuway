@@ -19,7 +19,7 @@ class UserStatusCheckMiddleware
         $user = $request->user('api');
 
         if ($user->status == User::STATUS_BLACK) {
-            throw new \Exception('您已被管理员限制权限，如想享受更多权限，请与管理员，微信号“luozituwei”联系');
+            throw new \Exception('您已被管理员限制权限，如想享受更多权限，请与管理员，微信号“ys931789742”联系');
         }
 
         return $next($request);
