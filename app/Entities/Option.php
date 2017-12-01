@@ -30,4 +30,9 @@ class Option extends Model implements Transformable
     {
         return empty($value) ? '[]': Common::jsonDecode($value);
     }
+
+    public function getMessagesAttribute($value)
+    {
+        return empty($value) ? '[]': Common::jsonDecode($value);
+    }
 }

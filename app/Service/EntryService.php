@@ -12,6 +12,7 @@ namespace App\Service;
 use App\Entities\Activity;
 use App\Repositories\EntryRepository;
 use Illuminate\Http\Request;
+use Validator;
 
 class EntryService
 {
@@ -42,7 +43,6 @@ class EntryService
 
         $data['user_id'] = $user_id;
 
-        //报名，以后改为队列方式，防止超报
         \DB::transaction(function () use($data, $activity){
             $this->entryRepository->create($data);
             $activity->num++;
@@ -73,15 +73,17 @@ class EntryService
     private function validatorOptions(array $data, $activity)
     {
         $optionService = app(OptionService::class);
-        $option_collection = $optionService->getInfoByIds($activity->options, ['key', 'rule']);
+        $option_collection = $optionService->getInfoByIds($activity->options, ['key', 'rule', 'messages']);
 
         $rule = [];
+        $messages = [];
 
         foreach ($option_collection as $option) {
             $rule[$option->key] = $option->rule;
+            $messages = array_merge($messages, $option->messages);
         }
 
-        validator($data, $rule);
+        Validator::make($data, $rule, $messages)->validate();
     }
 
     /**

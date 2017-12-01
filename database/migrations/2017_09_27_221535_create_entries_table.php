@@ -18,10 +18,10 @@ class CreateEntriesTable extends Migration
             $table->unsignedInteger('activity_id')->comment('活动id');
             $table->unsignedInteger('user_id')->comment('用户id');
             $table->string('name', 32)->comment('姓名');
-            $table->char('phone', 11)->nullable()->comment('手机号码');
-            $table->char('id_card', 20)->nullable()->comment('身份证号码');
-            $table->tinyInteger('gender')->nullable()->comment('性别 0：未知、1：男、2：女');
-            $table->char('age', 20)->nullable()->comment('年龄');
+            $table->char('phone', 11)->default('')->comment('手机号码');
+            $table->char('id_card', 20)->default('')->comment('身份证号码');
+            $table->tinyInteger('gender')->default(0)->comment('性别 0：未知、1：男、2：女');
+            $table->tinyInteger('age')->default(0)->comment('年龄');
             $table->timestamps();
 		});
 	}
