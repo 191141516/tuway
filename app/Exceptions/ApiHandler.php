@@ -15,6 +15,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -33,6 +34,7 @@ class ApiHandler
 
     protected $doReport = [
         AuthenticationException::class => ['未授权', 401],
+        OAuthServerException::class => ['未授权', 401],
         NotFoundHttpException::class => ['接口不存在', 404],
         ModelNotFoundException::class => ['系统异常', 500],
         ValidationException::class => ['数据验证错误', 601],
