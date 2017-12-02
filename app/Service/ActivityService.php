@@ -12,6 +12,7 @@ use App\Criteria\Activity\ActivityPaginateCriteria;
 use App\Criteria\ActivityDataTableCriteria;
 use App\Criteria\UserIdCriteria;
 use App\Entities\Activity;
+use App\Entities\Option;
 use App\Repositories\ActivityRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -56,13 +57,19 @@ class ActivityService
         $this->imageService->addThumbPath(public_path(env('UPLOAD_IMG_PATH').$row['pic']));
 
         $activity_id = 0;
+        $rendezvouses = $this->checkRendezvouses($row['rendezvouses']);
 
-        \DB::transaction(function () use ($row, &$activity_id, $images) {
+        \DB::transaction(function () use ($row, &$activity_id, $images, $rendezvouses) {
             $activity = $this->activityRepository->create($row);
             $activity_id = $activity->id;
 
+            /** @var ActivityImageService $activityImageService */
             $activityImageService = app(ActivityImageService::class);
-            $activityImageService->insertActivityImages($activity_id, $images);
+            $activityImageService->insertActivityImages($activity, $images);
+
+            /** @var RendezvousService $rendezvousService */
+            $rendezvousService = app(RendezvousService::class);
+            $rendezvousService->insertRendezvouses($activity, $rendezvouses);
 
             //移动图片
             $this->imageService->moveImg();
@@ -187,6 +194,8 @@ class ActivityService
         $images_arr = $request->get('images', array());
         $images = $this->imageService->updateImages($images_arr);
 
+        $row['rendezvouses'] = $this->checkRendezvouses($row['rendezvouses']);
+
         $update_pic = false;
         $old_pic = $activity->pic;
 
@@ -199,8 +208,13 @@ class ActivityService
 
         \DB::transaction(function () use ($activity, $row, $update_pic, $old_pic, $images) {
 
+            /** @var ActivityImageService $activityImageService */
             $activityImageService = app(ActivityImageService::class);
             $activityImageService->updateActivityImages($activity, $images);
+
+            /** @var RendezvousService $rendezvousService */
+            $rendezvousService = app(RendezvousService::class);
+            $rendezvousService->updateRendezvouses($activity, $row['rendezvouses']);
 
             $activity->update($row);
 
@@ -260,7 +274,11 @@ class ActivityService
 
         /** @var OptionService $optionService */
         $optionService = app(OptionService::class);
-        return $optionService->getInfoByIds($activity->options, ['id', 'name', 'key', 'type', 'option_value', 'placeholder']);
+        $option_collection = $optionService->getInfoByIds($activity->options, ['id', 'name', 'key', 'type', 'option_value', 'placeholder']);
+
+        $item = $this->getRendezvouses($activity);
+        $option_collection->add($item);
+        return $option_collection;
     }
 
 
@@ -314,7 +332,10 @@ class ActivityService
             },
             'activityImage' => function($query) {
                 $query->select(['activity_id', 'img']);
-            }
+            },
+            'rendezvouses' => function($query) {
+                $query->select(['activity_id', 'rendezvous'])->orderBy('sort');
+            },
         ];
 
         $activity = $this->activityRepository->with($relations)->find($id);
@@ -390,5 +411,70 @@ class ActivityService
     public function updateByIds(array $ids, array $update)
     {
         Activity::whereIn('id', $ids)->update($update);
+    }
+
+    /**
+     * check 集合点数据
+     * @param $rendezvouses
+     * @return array
+     * @throws \Exception
+     */
+    private function checkRendezvouses($rendezvouses)
+    {
+        if (!is_array($rendezvouses)) {
+            throw new \Exception('集合地址类型错误');
+        }
+
+        $rendezvouses = array_filter($rendezvouses, function($value){
+            return !empty(trim($value));
+        });
+
+        if (empty($rendezvouses)) {
+            throw new \Exception('集合地址错误');
+        }
+
+        if (count($rendezvouses) > 5) {
+            throw new \Exception('集合地址最多5个');
+        }
+
+        return $rendezvouses;
+    }
+
+    /**
+     * 报名项--报名地址
+     * @param Activity $activity
+     */
+    private function getRendezvouses(Activity $activity)
+    {
+        $attributes = [
+            'name' => '集合点',
+            'key' => 'rendezvous',
+            'type' => 'picker',
+            'option_value' => [
+                [
+                    'title' => '没设置',
+                    'value' => 0
+                ],
+
+            ],
+            'placeholder' => '集合点'
+        ];
+
+        $rendezvouses = $activity->rendezvouses;
+
+        if ($rendezvouses->count()) {
+            $attributes['option_value'] = [];
+
+            foreach ($rendezvouses as $rendezvous) {
+                $attributes[] = [
+                    'title' => $rendezvous->rendezvous,
+                    'value' => $rendezvous->id
+                ];
+            }
+        }
+
+        $attributes['option_value'] = json_encode($attributes['option_value']);
+
+        return new Option($attributes);
     }
 }

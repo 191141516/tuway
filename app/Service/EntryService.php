@@ -40,6 +40,8 @@ class EntryService
         $this->checkActivityTotal($activity);
         //validator报名必填项
         $this->validatorOptions($data, $activity);
+        //根据集合点id获取集合点地址
+        $data['rendezvous'] = $this->getRendezvouses($activity, $data['rendezvous']);
 
         $data['user_id'] = $user_id;
 
@@ -75,8 +77,14 @@ class EntryService
         $optionService = app(OptionService::class);
         $option_collection = $optionService->getInfoByIds($activity->options, ['key', 'rule', 'messages']);
 
-        $rule = [];
-        $messages = [];
+        $rule = [
+            'rendezvous' => ['required', 'integer']
+        ];
+
+        $messages = [
+            'rendezvous.required' => '请选择集合点',
+            'rendezvous.integer' => '集合点数据异常',
+        ];
 
         foreach ($option_collection as $option) {
             $rule[$option->key] = $option->rule;
@@ -107,5 +115,30 @@ class EntryService
         });
 
         return $this->entryRepository->with($relations)->paginate($page_size);
+    }
+
+    /**
+     * 根据集合点id获取集合点地址
+     * @param $rendezvous
+     */
+    private function getRendezvouses(Activity $activity, $rendezvous_id)
+    {
+        $value = '';
+
+        if ($rendezvous_id != 0) {
+
+            /** @var RendezvousService $rendezvousService */
+            $rendezvousService = app(RendezvousService::class);
+            $collection = $rendezvousService->getRendezvousByActivityIdAndId($activity->id, $rendezvous_id);
+
+            if ($collection->isEmpty()){
+                throw new \Exception('集合点数据异常');
+            }
+
+            $rendezvous = $collection->shift();
+            $value = $rendezvous['rendezvous'];
+        }
+
+        return $value;
     }
 }

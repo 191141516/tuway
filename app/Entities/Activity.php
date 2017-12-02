@@ -2,7 +2,6 @@
 
 namespace App\Entities;
 
-use App\Events\ActivityClearCacheEvent;
 use App\Events\PublishActivityEvent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -101,6 +100,15 @@ class Activity extends Model implements Transformable
     public function activityImage()
     {
         return $this->hasMany(ActivityImage::class, 'activity_id', 'id');
+    }
+
+    /**
+     * 集合点
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rendezvouses()
+    {
+        return $this->hasMany(Rendezvous::class, 'activity_id', 'id');
     }
 
     public function getStartDateTextAttribute()

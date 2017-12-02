@@ -21,14 +21,18 @@ class ActivityImageService
         $this->activityImageRepository = $activityImageRepository;
     }
 
-    public function insertActivityImages($activity_id, $images)
+    public function insertActivityImages(Activity $activity, $images)
     {
         $rows = [];
 
+        $now = now()->format('Y-m-d H:i:s');
+
         foreach ($images as $image) {
             $rows[] = [
-                'activity_id' => $activity_id,
+                'activity_id' => $activity->id,
                 'img' => $image,
+                'created_at' => $now,
+                'updated_at' => $now,
             ];
         }
 
@@ -38,6 +42,6 @@ class ActivityImageService
     public function updateActivityImages(Activity $activity, $images)
     {
         $activity->activityImage()->delete();
-        $this->insertActivityImages($activity->id, $images);
+        $this->insertActivityImages($activity, $images);
     }
 }

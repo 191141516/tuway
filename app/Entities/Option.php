@@ -23,16 +23,16 @@ class Option extends Model implements Transformable
 
     public function getOptionValueAttribute($value)
     {
-        return empty($value) ? '[]': Common::jsonDecode($value);
+        return empty($value) ? []: Common::jsonDecode($value);
     }
 
     public function getRuleAttribute($value)
     {
-        return empty($value) ? '[]': Common::jsonDecode($value);
+        return empty($value) ? []: Common::jsonDecode($value);
     }
 
     public function getMessagesAttribute($value)
     {
-        return empty($value) ? '[]': Common::jsonDecode($value);
+        return empty($value) ? []: Common::jsonDecode($value);
     }
 }
