@@ -170,7 +170,7 @@ class ImageService
             $width = (int) $item['width'];
             $height = is_null($item['height']) ? null: (int) $item['height'];
 
-            if ($width > 0 && $height > 0) {
+            if ($width > 0 ) {
                 foreach ($this->thumb_img_path as $path) {
                     Common::generateThumb($path, $width, $height);
                 }
