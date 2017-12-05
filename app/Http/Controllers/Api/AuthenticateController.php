@@ -54,6 +54,7 @@ class AuthenticateController extends ApiController
 //        $result['expires_in'] = Carbon::now()->addSecond($result['expires_in']); //版本升级没有expires_in
         $result['expires_in'] = Carbon::now();
 
+        /** @var UserService $userService */
         $userService = app(UserService::class);
 
         $user = $userService->updateOrCreate($result);

@@ -18,7 +18,7 @@ return [
         'thumb' => [
             [
                 'width' => 256,
-                'height' => 256
+                'height' => null
             ]
         ]
     ],
@@ -33,7 +33,7 @@ return [
         'thumb' => [
             [
                 'width' => 64,
-                'height' => 64
+                'height' => null
             ]
         ]
     ]

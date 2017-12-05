@@ -168,7 +168,7 @@ class ImageService
 
         foreach ($thumb_config as $item) {
             $width = (int) $item['width'];
-            $height = (int) $item['height'];
+            $height = is_null($item['height']) ? null: (int) $item['height'];
 
             if ($width > 0 && $height > 0) {
                 foreach ($this->thumb_img_path as $path) {

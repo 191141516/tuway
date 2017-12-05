@@ -88,13 +88,15 @@ class Common
         $thumb_name = self::thumbPath($path, $width, $height);
 
         $img = Image::make($path);
-        $img->resize($width, $height);
+        $img->fit($width, $height);
         $img->save($thumb_name);
     }
 
     public static function thumbPath($path, $width, $height)
     {
         $path_info = pathinfo($path);
+        $height = is_null($height) ? '_': $height;
+
         return $path_info['dirname'].'/'.$path_info['filename'].'_'.$width.'x'.$height.'.'.$path_info['extension'];
     }
 }
