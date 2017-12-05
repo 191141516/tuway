@@ -236,12 +236,7 @@ class ActivityService
             throw new \Exception('当前状态活动不能删除');
         }
 
-        \DB::transaction(function () use ($activity) {
-            $images = $activity->activityImage;
-            $activity->entry()->delete();
-            $activity->delete();
-            $this->removeImage($images);
-        });
+        $this->deleteByActivity($activity);
     }
 
     /**
@@ -341,12 +336,7 @@ class ActivityService
     {
         $activity = $this->getActivityById($id);
 
-        \DB::transaction(function () use ($activity) {
-            $images = $activity->activityImage;
-            $activity->entry()->delete();
-            $activity->delete();
-            $this->removeImage($images);
-        });
+        $this->deleteByActivity($activity);
     }
 
     /**
@@ -390,5 +380,21 @@ class ActivityService
     public function updateByIds(array $ids, array $update)
     {
         Activity::whereIn('id', $ids)->update($update);
+    }
+
+    /**
+     * @param $activity
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function deleteByActivity(Activity $activity)
+    {
+        \DB::transaction(function () use ($activity) {
+            $images = $activity->activityImage;
+            $activity->entry()->delete();
+            $activity->delete();
+            $this->removeImage($images);
+            $activity->activityImage()->delete();
+        });
     }
 }
