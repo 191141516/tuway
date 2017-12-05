@@ -47,6 +47,12 @@ class ActivityService
         return $activity;
     }
 
+    /**
+     * @param Request $request
+     * @return int
+     * @throws \Exception
+     * @throws \Throwable
+     */
     public function create(Request $request)
     {
         $row = $request->all();
@@ -159,6 +165,7 @@ class ActivityService
 
         $entryUser = $activity->getRelation('entryUser');
         $activityImage = $activity->getRelation('activityImage');
+        $rendezvouses = $activity->getRelation('rendezvouses');
 
         $activity->setAttribute('is_entry', in_array($user_id, $entryUser->pluck('id')->toArray()));
 
@@ -167,6 +174,8 @@ class ActivityService
 //        $activity->setRelation('entryUser', $entryUser);
 
         $activity->setRelation('activity_image', $activityImage->pluck('img'));
+
+        $activity->setRelation('rendezvouses', $rendezvouses->pluck('rendezvous'));
 
         return $activity;
     }
@@ -230,6 +239,7 @@ class ActivityService
     /**
      * 用户删除活动
      * @param $id
+     * @throws \Exception
      */
     public function userDelete($id)
     {
@@ -255,6 +265,7 @@ class ActivityService
             $activity->entry()->delete();
             $activity->delete();
             $this->removeImage($images);
+            $activity->rendezvouses()->delete();
         });
     }
 
@@ -373,6 +384,7 @@ class ActivityService
     /**
      * 置顶
      * @param $id
+     * @throws \Exception
      */
     public function top($id)
     {
@@ -385,6 +397,7 @@ class ActivityService
     /**
      * 取消置顶
      * @param $id
+     * @throws \Exception
      */
     public function cancelTop($id)
     {
@@ -397,6 +410,7 @@ class ActivityService
     /**
      * @param $images
      * @param $this
+     * @throws \Exception
      */
     public function removeImage($images)
     {
