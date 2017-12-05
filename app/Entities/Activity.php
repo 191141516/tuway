@@ -182,4 +182,9 @@ class Activity extends Model implements Transformable
 
         return $pic;
     }
+
+    public function setPriceAttribute($value)
+    {
+        return is_numeric($value) ? $value :0;
+    }
 }
