@@ -106,6 +106,10 @@ class ImageService
 
         $mime_type = \File::mimeType($public_path);
 
+        if (!isset(self::$mime_type_suffix_map[$mime_type])) {
+            throw new \Exception('图片异常，请重新上传');
+        }
+
         $path = $dir.$path_info['filename'].self::$mime_type_suffix_map[$mime_type];
 
         if ($to_del) {
