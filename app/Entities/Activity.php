@@ -185,6 +185,6 @@ class Activity extends Model implements Transformable
 
     public function setPriceAttribute($value)
     {
-        return is_numeric($value) ? $value :0;
+        $this->attributes['price'] = is_numeric($value) ? $value :0;
     }
 }
