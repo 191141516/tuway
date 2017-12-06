@@ -87,9 +87,12 @@ class ApiHandler
             $errors = $this->exception->errors();
         }
 
-        $exception_message = $this->exception->getMessage();
-        $exception_message = empty($exception_message)  ? $message[0] : $exception_message;
-        return $this->failed($exception_message, $message[1], [], $errors);
+//        $exception_message = $this->exception->getMessage();
+
+        report($this->exception);
+
+//        $exception_message = empty($exception_message)  ? $message[0] : $exception_message;
+        return $this->failed($message[0], $message[1], [], $errors);
 
     }
 }

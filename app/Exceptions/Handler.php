@@ -72,7 +72,7 @@ class Handler extends ExceptionHandler
         $redirect_url = isset($guards['0']) && $guards['0'] === 'admin' ? route('admin.login'): route('login');
 
         return $request->expectsJson()
-            ? response()->json(['message' => 'Unauthenticated.'], 401)
+            ? response()->json(['message' => '未授权'], 401)
             : redirect()->guest($redirect_url);
     }
 }
