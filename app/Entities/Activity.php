@@ -169,8 +169,8 @@ class Activity extends Model implements Transformable
     {
         $thumb_config = config('upload.img.thumb');
 
-        $width = isset($thumb_config['0']['width']) ? $thumb_config['0']['width'] : 128;
-        $height = isset($thumb_config['0']['height']) ? $thumb_config['0']['height'] : 128;
+        $width = isset($thumb_config['0']['width']) ? $thumb_config['0']['width'] : 256;
+        $height = empty($thumb_config['0']['height']) ? null : $thumb_config['0']['height'];
 
         $thumb_name = Common::thumbPath($value, $width, $height);
 
