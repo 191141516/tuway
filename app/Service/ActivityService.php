@@ -209,7 +209,7 @@ class ActivityService
             }
 
             $this->imageService->moveImg();
-            $this->imageService->delImg();
+//            $this->imageService->delImg();
         });
     }
 
@@ -393,7 +393,7 @@ class ActivityService
             $images = $activity->activityImage;
             $activity->entry()->delete();
             $activity->delete();
-            $this->removeImage($images);
+//            $this->removeImage($images);
             $activity->activityImage()->delete();
         });
     }
