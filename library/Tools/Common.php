@@ -88,7 +88,9 @@ class Common
         $thumb_name = self::thumbPath($path, $width, $height);
 
         $img = Image::make($path);
-        $img->fit($width, $height);
+        $img->resize($width, $height, function ($constraint){
+            $constraint->aspectRatio();
+        });
         $img->save($thumb_name);
     }
 

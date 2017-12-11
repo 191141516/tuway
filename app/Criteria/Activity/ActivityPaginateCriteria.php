@@ -59,7 +59,7 @@ class ActivityPaginateCriteria implements CriteriaInterface
         $model->select('activities.*');
         $model->orderBy('activities.top_time', 'desc');
         $model->orderBy('activities.status');
-        $model->orderBy('activities.start_date');
+        $model->orderByRaw("CASE WHEN activities.status in (1, 2) THEN activities.start_date END ASC, CASE WHEN status=3 THEN activities.start_date END DESC");
 
         return $model;
     }
