@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('/test', 'TestController@index');
 
+    Route::get('/test-activity', 'ActivityController@index')->name('test_list');
+
     Route::get('wx-login', 'AuthenticateController@wxLogin')->name('wx-login');
 
     Route::group(['middleware' => ['auth:api']] , function () {
@@ -30,7 +32,7 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
         //活动
         Route::group(['prefix' => 'activity', 'as' => 'activity.'], function(){
             //发布活动
-            Route::post('/', 'ActivityController@create')->name('create')->middleware('user_status_check');;
+            Route::post('/', 'ActivityController@create')->name('create')->middleware('user_status_check');
             //活动列表
             Route::get('/', 'ActivityController@index')->name('list');
             //活动详情
