@@ -69,9 +69,15 @@ class UserService
         $session_key = $user->session_key;
 
         //解密
+        \Log::info("app_id:".$app_id);
+        \Log::info("session_key:".$session_key);
+        \Log::info("encrypted_data:".$encrypted_data);
+        \Log::info("iv:".$iv);
+
         $crypt = new WXBizDataCrypt($app_id, $session_key);
         $err_code = $crypt->decryptData($encrypted_data, $iv, $data);
 
+        \Log::info($err_code);
         if ($err_code != 0) {
             throw new \Exception('数据异常');
         }
