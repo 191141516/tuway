@@ -23,9 +23,9 @@ class UserController extends ApiController
 
         $user = $request->user('api');
 
-        \Log::info($request->get('encryptedData'));
-        \Log::info($request->get('iv'));
-        \Log::info($user);
+//        \Log::info($request->get('encryptedData'));
+//        \Log::info($request->get('iv'));
+//        \Log::info($user);
 
         $this->service->saveWXInfo($request->get('encryptedData'), $request->get('iv'), $user);
 
